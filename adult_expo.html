@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>乐天知性 · 安心答 | 成人展讯（18+）</title>
+
+<!-- ===== 轮子：与 index.html 完全一致（字体 / 图标 / 动画，全部 CDN，零构建） ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css" />
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+<style>
+  :root {
+    --brand: #ff6b8a;
+    --brand-deep: #f2527a;
+    --brand-soft: #ffe9ef;
+    --brand-tint: #fff5f8;
+    --ink: #2e2a33;
+    --muted: #938b97;
+    --line: #f1e9ee;
+    --bg: #fffafb;
+    --card: #ffffff;
+    --shadow-sm: 0 2px 10px rgba(255,107,138,.08);
+    --shadow-md: 0 10px 28px rgba(255,107,138,.14);
+    --shadow-lg: 0 24px 70px rgba(255,107,138,.20);
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans SC", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--ink); line-height: 1.65;
+    background:
+      radial-gradient(1100px 560px at 82% -12%, #ffe1ec 0%, rgba(255,225,236,0) 60%),
+      radial-gradient(900px 520px at -8% 8%, #fff1e6 0%, rgba(255,241,230,0) 55%),
+      var(--bg);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  /* 顶栏 */
+  header.topbar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 22px; background: rgba(255,255,255,.78);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 20;
+  }
+  .logo { display: flex; align-items: center; gap: 8px; font-family: "ZCOOL KuaiLe", "Noto Sans SC", sans-serif; font-size: 22px; color: var(--brand); letter-spacing: .5px; }
+  .logo .ti { font-size: 24px; }
+  .logo small { font-family: "Noto Sans SC", sans-serif; font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 4px; letter-spacing: 0; }
+  .top-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+    border: 1px solid var(--line); background: #fff; color: var(--muted);
+    padding: 7px 16px; border-radius: 999px; cursor: pointer; font-size: 14px; font-weight: 600; transition: .18s;
+  }
+  .back-link:hover { color: var(--brand); border-color: var(--brand-soft); }
+
+  /* 二次年龄门（玻璃拟态，进入展讯前强制） */
+  .gate-mask {
+    position: fixed; inset: 0;
+    background: rgba(28, 22, 32, .55);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px;
+  }
+  .gate-box {
+    position: relative; background: rgba(255,255,255,.82);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,.7);
+    border-radius: 22px; max-width: 460px; width: 100%;
+    padding: 38px 32px 30px; text-align: center; box-shadow: var(--shadow-lg);
+    animation: gatePop .4s cubic-bezier(.2,.8,.3,1.1);
+  }
+  .gate-box::before {
+    content: ""; position: absolute; left: 24px; right: 24px; top: 0; height: 4px;
+    border-radius: 0 0 4px 4px; background: linear-gradient(90deg, var(--brand), #ffb199);
+  }
+  @keyframes gatePop { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
+  .gate-box h2 { margin: 0 0 8px; font-size: 23px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .gate-box p { color: var(--muted); font-size: 14px; margin: 0 0 22px; }
+  .gate-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 14px; margin: 10px 0; border-radius: 14px;
+    font-size: 15px; font-weight: 700; cursor: pointer; border: none; transition: .18s;
+  }
+  .gate-btn .ti { font-size: 18px; }
+  .gate-adult { background: linear-gradient(135deg, var(--brand), var(--brand-deep)); color: #fff; box-shadow: var(--shadow-sm); }
+  .gate-adult:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .gate-minor { background: var(--brand-soft); color: var(--brand-deep); }
+  .gate-minor:hover { background: #ffd9e4; }
+  .gate-hint { font-size: 12px; color: var(--muted); margin-top: 14px; line-height: 1.6; }
+
+  /* 主体 */
+  main { max-width: 1080px; margin: 0 auto; padding: 22px 20px; }
+  .pane { display: none; }
+  .pane.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .note {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin: 12px 2px 18px; font-size: 13px; color: #7a4a57;
+    background: var(--brand-soft); border-left: 3px solid var(--brand); padding: 12px 16px; border-radius: 10px;
+  }
+  .note .ti { color: var(--brand-deep); font-size: 18px; margin-top: 1px; flex: 0 0 auto; }
+  .warn-note { background: #fff6e9; border-left-color: #f0a13a; color: #8a5a18; }
+  .warn-note .ti { color: #d98a16; }
+
+  .section-title { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; margin: 26px 2px 14px; }
+  .section-title .ti { color: var(--brand); font-size: 22px; }
+
+  /* 展会卡 */
+  .expo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+  .expo {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px;
+    cursor: pointer; transition: .18s; box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
+  }
+  .expo::after {
+    content: ""; position: absolute; right: -30px; top: -30px; width: 90px; height: 90px;
+    background: radial-gradient(circle, var(--brand-soft) 0%, transparent 70%); opacity: .5; transition: .2s;
+  }
+  .expo:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--brand-soft); }
+  .expo:hover::after { transform: scale(1.3); }
+  .expo h3 { margin: 2px 0 6px; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+  .expo h3 .ti { color: var(--brand); font-size: 20px; }
+  .expo .when { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--brand-deep); background: var(--brand-soft); padding: 3px 10px; border-radius: 999px; margin-bottom: 8px; }
+  .expo .meta { font-size: 13px; color: var(--muted); margin: 3px 0; display: flex; gap: 8px; }
+  .expo .meta .ti { color: var(--brand-deep); flex: 0 0 auto; margin-top: 2px; }
+  .expo .hl { font-size: 13px; color: var(--ink); margin: 8px 0 0; padding-left: 0; }
+  .expo .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .badge { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+  .badge.verified { background: #e7f7ee; color: #1f8a4d; }
+  .badge.edu { background: #eef1ff; color: #4458d6; }
+  .expo .open-tag { font-size: 12px; color: var(--brand); font-weight: 700; margin-top: 10px; display: inline-flex; align-items: center; gap: 5px; }
+
+  /* 详情浮层 */
+  .modal-mask { position: fixed; inset: 0; background: rgba(28,22,32,.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 60; padding: 20px; }
+  .modal-mask.show { display: flex; }
+  .modal {
+    position: relative; background: #fff; border-radius: 20px; max-width: 540px; width: 100%;
+    padding: 28px 26px 24px; box-shadow: var(--shadow-lg); animation: gatePop .3s ease; max-height: 86vh; overflow: auto;
+  }
+  .modal h3 { margin: 0 0 4px; font-size: 19px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+  .modal .close { position: absolute; top: 16px; right: 18px; border: none; background: var(--brand-soft); color: var(--brand-deep); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 16px; }
+  .modal .row { font-size: 14px; margin: 8px 0; color: var(--ink); display: flex; gap: 8px; }
+  .modal .row .ti { color: var(--brand-deep); flex: 0 0 auto; margin-top: 2px; }
+  .modal .row b { color: var(--brand-deep); font-weight: 700; }
+  .modal .src-note { font-size: 12px; color: var(--muted); background: var(--brand-tint); border-radius: 10px; padding: 10px 12px; margin: 12px 0; line-height: 1.6; }
+  .modal a.ext { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; background: linear-gradient(135deg, var(--brand), var(--brand-deep)); color: #fff; font-weight: 700; padding: 11px 18px; border-radius: 12px; font-size: 14px; }
+  .modal a.ext:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+  /* 合规区 */
+  .compliance { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; margin-top: 8px; box-shadow: var(--shadow-sm); }
+  .compliance h4 { margin: 0 0 12px; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+  .compliance h4 .ti { color: var(--brand); }
+  .compliance ul { margin: 0; padding-left: 20px; font-size: 14px; }
+  .compliance li { margin: 8px 0; color: var(--ink); }
+  .compliance li b { color: var(--brand-deep); }
+  .compliance .mini { font-size: 12px; color: var(--muted); margin-top: 14px; line-height: 1.6; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 30px 10px 50px; }
+</style>
+</head>
+<body>
+
+<!-- ===== 二次 18+ 年龄门（演示模拟） ===== -->
+<div class="gate-mask" id="gate">
+  <div class="gate-box">
+    <h2><i class="ti ti-id-badge-2"></i> 二次年龄确认</h2>
+    <p>「成人展讯」聚合的是 18+ 公开展会信息。进入前需再次确认你已满 18 周岁。</p>
+    <button class="gate-btn gate-adult" onclick="enter(true)"><i class="ti ti-heart"></i> 我已满 18 周岁 · 查看展讯</button>
+    <button class="gate-btn gate-minor" onclick="enter(false)"><i class="ti ti-seedling"></i> 我未满 18 周岁 · 返回安全内容</button>
+    <div class="gate-hint">本验证为演示模拟，仅本地记录、不联网、不收集任何身份信息。真实上线需对接实名 / 证件级年龄校验。</div>
+  </div>
+</div>
+
+<!-- ===== 顶栏 ===== -->
+<header class="topbar">
+  <div class="logo"><i class="ti ti-ticket"></i> 乐天知性<small>安心答 · 成人展讯（18+）</small></div>
+  <div class="top-actions">
+    <a class="back-link" href="index.html"><i class="ti ti-arrow-left"></i> 返回主站</a>
+  </div>
+</header>
+
+<!-- ===== 主体 ===== -->
+<main>
+  <div class="note"><i class="ti ti-info-circle"></i><span>⚠️ 信息聚合自公开展会信息平台，<b>以各主办方官方发布为准</b>。本页只做信息聚合，<b>不撮合交易、不引流私域、不展示售卖链接</b>。点击「详情」仅外链到信息来源页。</span></div>
+  <div class="note warn-note"><i class="ti ti-alert-triangle"></i><span>🛡️ 安全边界：本版块默认隐藏，必须二次通过 18+ 年龄验证才展示；仅收录时间 / 地点 / 健康教育类活动，不沉淀任何交易信息。</span></div>
+
+  <div class="section-title"><i class="ti ti-calendar-event"></i> 2026–2027 全国成人健康 / 性文化展会</div>
+  <div class="expo-grid" id="expoGrid"></div>
+
+  <div class="section-title"><i class="ti ti-shield-check"></i> 合规说明（聚合边界）</div>
+  <div class="compliance">
+    <h4><i class="ti ti-shield-lock"></i> 我们不做什么 / 我们守什么</h4>
+    <ul>
+      <li><b>只聚合、不撮合</b>：仅展示公开展会的时间、地点、健康教育类亮点；不抓取售卖链接、不做私下交易引流、不在站内沉淀任何交易信息。</li>
+      <li><b>只外链、不沉淀</b>：每条展会「详情」仅跳转官方 / 权威展会信息平台，不在本页缓存交易或商品数据。</li>
+      <li><b>年龄前置</b>：必须二次通过 18+ 验证才展示本版块，未成年用户无法进入（与全局年龄门一致，分流而非放行）。</li>
+      <li><b>资质边界</b>：成人健康 / 情趣用品展会属合法产业活动，聚合其公开资讯不违法；但<b>真实长期上线</b>需 ICP 备案 + 网络文化经营许可证等资质。</li>
+      <li><b>比赛阶段</b>：当前为 GOAI 参赛 Demo，按「功能实现 + 合规设计」展示即可，不强制资质，不触碰真实交易。</li>
+    </ul>
+    <div class="mini">数据来源：公开展会信息平台聚合（见每条「详情」中的来源标注）。日期 / 场馆 / 主办以主办方最终发布为准；如有变动请以官方通知为依归。本页为演示性质，不代表任何主办方的官方发布渠道。</div>
+  </div>
+</main>
+
+<!-- 详情浮层 -->
+<div class="modal-mask" id="modal">
+  <div class="modal">
+    <button class="close" onclick="closeModal()"><i class="ti ti-x"></i></button>
+    <h3><i class="ti ti-ticket"></i> <span id="mTitle"></span></h3>
+    <div id="mBody"></div>
+    <div class="src-note" id="mSrc"></div>
+    <a class="ext" id="mLink" href="#" target="_blank" rel="noopener"><i class="ti ti-external-link"></i> 前往信息来源页（以官方为准）</a>
+  </div>
+</div>
+
+<footer>乐天知性 · 安心答 — Global Open-source AI Challenge (GOAI) 参赛作品 · 18+ 内容聚合演示</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+/* ============================================================
+   成人展数据（源自 ADULT_EXPO_SOURCES.md 用户聚合内容，status=c 原创整理）
+   展示字段：名称 / 时间 / 城市 / 场馆 / 主办 / 规模 / 性教育·公益亮点 / 是否18+实名 / 来源链接
+   合规：仅聚合公开信息，以官方为准；详情只外链，不撮合。
+   ============================================================ */
+  const EXPOS = [
+    {
+      name:"青岛国际情趣生活及成人健康产业博览会",
+      when:"2026 首届 5/22–5/24（2027 第二届已官宣）",
+      city:"青岛 · 中铁青岛世界博览城",
+      venue:"青岛西海岸新区三沙路 3399 号",
+      host:"组委会",
+      scale:"1 万㎡ / 300+ 品牌 / 3 万观众",
+      hl:"两性关系工作坊、中国古代性教育知识科普展、生殖健康公益讲堂；18+ 实名电子票，禁偷拍 / 不雅行为。",
+      verified:true, edu:true,
+      src:"https://yunfair.com/focus/6366.html", srcLabel:"展会信息平台 yunfair", note:"用户亲历场次。详情以主办方官方发布为准。"
+    },
+    {
+      name:"API EXPO 上海国际情趣生活及健康产业博览会",
+      when:"2027.04.16–18",
+      city:"上海 · 跨国采购会展中心",
+      venue:"上海跨国采购会展中心",
+      host:"中国生殖健康产业协会",
+      scale:"3 万㎡ / 5 万观众 / 400 展商",
+      hl:"主题「潮趣·阳光化」，大健康 + AI 融合，设行业论坛。",
+      verified:true, edu:true,
+      src:"https://www.jufair.com/information/58035.html", srcLabel:"展会信息平台 jufair", note:"公开信息平台聚合，请以主办方官方发布为准。"
+    },
+    {
+      name:"ADC-EXPO 中国国际成人保健及生殖健康展览会（2004 创办）",
+      when:"2026.04.17–19",
+      city:"上海 · 世贸商城",
+      venue:"上海世贸商城",
+      host:"中国国际展览中心集团公司",
+      scale:"360+ 展商 / 560+ 品牌",
+      hl:"设「中国国际生殖健康及情趣产业高峰论坛」+ 性健康教育公益、防艾宣传。",
+      verified:true, edu:true,
+      src:"https://japanshow.cn/expo/adc.html", srcLabel:"官网 japanshow.cn", note:"老牌展会（2004 创办）。详情以主办方官方发布为准。"
+    },
+    {
+      name:"AAE 亚洲成人博览会 · 广州站",
+      when:"2026.09.04–06",
+      city:"广州 · 广交会展馆琶洲",
+      venue:"广交会展馆琶洲",
+      host:"AAE 有限公司",
+      scale:"1.5 万㎡ / 200 展商 / 3 万观众",
+      hl:"主题「觉醒·Turn On」性·学·美；悦己经济。",
+      verified:true, edu:true,
+      src:"https://www.jufair.com/exhibition/aae-asia-adult-gz", srcLabel:"展会信息平台 jufair", note:"香港 16 年展落地广州。请以主办方官方发布为准。"
+    },
+    {
+      name:"SZI EXPO 深圳国际成人健康保健用品展览会（亚洲最大 B2B）",
+      when:"2026.09.18–20",
+      city:"深圳 · 国际会展中心宝安",
+      venue:"深圳国际会展中心（宝安）",
+      host:"SZI EXPO 组委会",
+      scale:"4 万㎡ / 450 展商 / 2.5 万观众",
+      hl:"全球供应链 + 跨境电商，私立健康板块。",
+      verified:true, edu:true,
+      src:"https://m.jufair.com/exhibition/szi-expo", srcLabel:"展会信息平台 jufair", note:"公开信息平台聚合，请以主办方官方发布为准。"
+    },
+    {
+      name:"广州 / 上海性文化节",
+      when:"广州 2026.10.31–11.02",
+      city:"广州",
+      venue:"广州",
+      host:"—",
+      scale:"性文化科普向",
+      hl:"性文化科普向活动。",
+      verified:false, edu:true,
+      src:"https://www.shifair.com/wap/article_details/index/id/368294.html", srcLabel:"展会信息平台 shifair", note:"公开信息平台聚合，请以主办方官方发布为准。"
+    },
+    {
+      name:"香港 AAE 亚洲成人博览会",
+      when:"2026.08.25–27",
+      city:"香港",
+      venue:"香港",
+      host:"AAE",
+      scale:"国际品牌，性·学·美",
+      hl:"国际品牌，性·学·美主题。",
+      verified:true, edu:true,
+      src:"https://www.jufair.com/exhibition/aae-asia-adult-gz", srcLabel:"展会信息平台 jufair", note:"公开信息平台聚合，请以主办方官方发布为准。"
+    },
+    {
+      name:"义乌情趣生活产业展",
+      when:"2026.07.03–05",
+      city:"义乌",
+      venue:"义乌",
+      host:"—",
+      scale:"产业带",
+      hl:"产业带相关展会。",
+      verified:false, edu:false,
+      src:"https://www.jufair.com/exhibition/aae-asia-adult-gz", srcLabel:"展会信息平台 jufair", note:"公开信息平台聚合，请以主办方官方发布为准。"
+    },
+    {
+      name:"台北 TRETaipei Red Expo",
+      when:"2026.07.03–05",
+      city:"台北",
+      venue:"台北",
+      host:"—",
+      scale:"跨境",
+      hl:"跨境相关展会。",
+      verified:false, edu:false,
+      src:"https://www.jufair.com/exhibition/aae-asia-adult-gz", srcLabel:"展会信息平台 jufair", note:"公开信息平台聚合，请以主办方官方发布为准。"
+    }
+  ];
+
+  function iconRow(icon, text) {
+    return `<div class="row"><i class="ti ${icon}"></i><span>${text}</span></div>`;
+  }
+
+  function renderExpos() {
+    const grid = document.getElementById("expoGrid");
+    EXPOS.forEach((e, i) => {
+      const el = document.createElement("div");
+      el.className = "expo";
+      el.setAttribute("data-aos", "fade-up");
+      el.setAttribute("data-aos-delay", String((i % 3) * 60));
+      const badges = [];
+      if (e.verified) badges.push('<span class="badge verified"><i class="ti ti-circle-check"></i> 18+ 实名</span>');
+      if (e.edu) badges.push('<span class="badge edu"><i class="ti ti-school"></i> 健康教育亮点</span>');
+      el.innerHTML = `
+        <h3><i class="ti ti-ticket"></i> ${e.name}</h3>
+        <span class="when"><i class="ti ti-calendar"></i> ${e.when}</span>
+        <div class="meta"><i class="ti ti-map-pin"></i><span>${e.city}</span></div>
+        <div class="meta"><i class="ti ti-building"></i><span>主办：${e.host}</span></div>
+        <div class="meta"><i class="ti ti-users"></i><span>${e.scale}</span></div>
+        <p class="hl">${e.hl}</p>
+        <div class="badges">${badges.join("")}</div>
+        <div class="open-tag"><i class="ti ti-chevron-right"></i> 查看详情 / 来源</div>
+      `;
+      el.onclick = () => openModal(i);
+      grid.appendChild(el);
+    });
+  }
+
+  function openModal(i) {
+    const e = EXPOS[i];
+    document.getElementById("mTitle").textContent = e.name;
+    document.getElementById("mBody").innerHTML =
+      iconRow("ti-calendar", `<b>时间：</b>${e.when}`) +
+      iconRow("ti-map-pin", `<b>城市 / 场馆：</b>${e.city} ${e.venue}`) +
+      iconRow("ti-building", `<b>主办：</b>${e.host}`) +
+      iconRow("ti-users", `<b>规模：</b>${e.scale}`) +
+      iconRow("ti-school", `<b>性教育 / 公益亮点：</b>${e.hl}`);
+    document.getElementById("mSrc").innerHTML =
+      `<b>信息来源：</b>${e.srcLabel}（${e.src}）<br>${e.note}`;
+    const link = document.getElementById("mLink");
+    link.href = e.src;
+    document.getElementById("modal").classList.add("show");
+  }
+  function closeModal() { document.getElementById("modal").classList.remove("show"); }
+  document.getElementById("modal").addEventListener("click", (ev) => { if (ev.target.id === "modal") closeModal(); });
+
+  // 二次年龄验证
+  function enter(isAdult) {
+    if (!isAdult) { window.location.href = "index.html"; return; }
+    try { localStorage.setItem("ltzx_expo_age", "adult"); } catch(e){}
+    document.getElementById("gate").style.display = "none";
+    document.getElementById("pane").classList.add("active");
+  }
+
+  function boot() {
+    renderExpos();
+    if (window.AOS) AOS.init({ duration: 500, once: true });
+    // 若此前已在站内切过成年版，免去二次门（演示便利）；否则强制二次验证
+    let adult = false;
+    try { adult = localStorage.getItem("ltzx_age") === "adult"; } catch(e){}
+    if (adult) {
+      document.getElementById("gate").style.display = "none";
+      document.getElementById("pane").classList.add("active");
+    }
+  }
+  boot();
+</script>
+</body>
+</html>

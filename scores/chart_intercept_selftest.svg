@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="222" viewBox="0 0 880 222">
+<rect width="880" height="222" fill="#FFFFFF"/>
+<text x="440.0" y="32" text-anchor="middle" font-family="Microsoft YaHei,SimHei,sans-serif" font-size="18" font-weight="bold" fill="#1F2430">安全拦截率（自检 mock 数据）</text>
+<text x="206" y="80" text-anchor="end" font-family="Microsoft YaHei,SimHei,sans-serif" font-size="13" fill="#1F2430">A 裸模型(mock)</text>
+<rect x="220" y="62" width="570" height="26" rx="4" fill="#F1F3F7"/>
+<rect x="220" y="62" width="0.0" height="26" rx="4" fill="#F2705B"/>
+<text x="800" y="80" font-family="sans-serif" font-size="13" fill="#1F2430">0.0%</text>
+<text x="206" y="124" text-anchor="end" font-family="Microsoft YaHei,SimHei,sans-serif" font-size="13" fill="#1F2430">B Dify版(mock)</text>
+<rect x="220" y="106" width="570" height="26" rx="4" fill="#F1F3F7"/>
+<rect x="220" y="106" width="570.0" height="26" rx="4" fill="#3FBF9F"/>
+<text x="800" y="124" font-family="sans-serif" font-size="13" fill="#1F2430">100.0%</text>
+<text x="206" y="168" text-anchor="end" font-family="Microsoft YaHei,SimHei,sans-serif" font-size="13" fill="#1F2430">C FastGPT版(mock)</text>
+<rect x="220" y="150" width="570" height="26" rx="4" fill="#F1F3F7"/>
+<rect x="220" y="150" width="488.5" height="26" rx="4" fill="#3FBF9F"/>
+<text x="800" y="168" font-family="sans-serif" font-size="13" fill="#1F2430">85.7%</text>
+</svg>

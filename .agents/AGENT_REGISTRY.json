@@ -1,0 +1,52 @@
+﻿{
+  "schema_version": "1.0",
+  "updated": "2026-08-04",
+  "agents": [
+    {
+      "id": "codex",
+      "role": "architect_reviewer",
+      "run_mode": "interactive_or_cli",
+      "capabilities": ["architecture", "implementation", "code_review", "verification"],
+      "default_lanes": ["architecture", "review"],
+      "max_risk": "high",
+      "human_supervision": "risk_based"
+    },
+    {
+      "id": "workbuddy",
+      "role": "primary_project_executor",
+      "run_mode": "interactive",
+      "capabilities": ["implementation", "project_context", "testing"],
+      "default_lanes": ["implementation"],
+      "max_risk": "medium",
+      "human_supervision": "risk_based"
+    },
+    {
+      "id": "github-copilot",
+      "role": "vscode_executor",
+      "run_mode": "interactive",
+      "capabilities": ["implementation", "tests", "local_review", "mcp_tools"],
+      "default_lanes": ["implementation", "tests"],
+      "max_risk": "medium",
+      "human_supervision": "required_for_tool_approval"
+    },
+    {
+      "id": "claude-code",
+      "role": "isolated_implementation_worker",
+      "run_mode": "interactive_or_cli",
+      "capabilities": ["large_codebase", "worktree", "implementation", "tests"],
+      "default_lanes": ["implementation"],
+      "max_risk": "medium",
+      "human_supervision": "risk_based"
+    },
+    {
+      "id": "cline",
+      "role": "approval_first_worker",
+      "run_mode": "interactive",
+      "capabilities": ["browser", "gui_workflow", "implementation"],
+      "default_lanes": ["interactive"],
+      "max_risk": "medium",
+      "human_supervision": "required_for_each_action"
+    }
+  ]
+}
+

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>乐天知性 · 安心答 | GOAI 参赛作品</title>
+
+<!-- ===== 轮子：字体 / 图标 / 动画（全部 CDN，零构建） ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css" />
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+<style>
+  :root {
+    --brand: #ff6b8a;
+    --brand-deep: #f2527a;
+    --brand-soft: #ffe9ef;
+    --brand-tint: #fff5f8;
+    --ink: #2e2a33;
+    --muted: #938b97;
+    --line: #f1e9ee;
+    --bg: #fffafb;
+    --card: #ffffff;
+    --shadow-sm: 0 2px 10px rgba(255,107,138,.08);
+    --shadow-md: 0 10px 28px rgba(255,107,138,.14);
+    --shadow-lg: 0 24px 70px rgba(255,107,138,.20);
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans SC", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--ink); line-height: 1.65;
+    background:
+      radial-gradient(1100px 560px at 82% -12%, #ffe1ec 0%, rgba(255,225,236,0) 60%),
+      radial-gradient(900px 520px at -8% 8%, #fff1e6 0%, rgba(255,241,230,0) 55%),
+      var(--bg);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  /* 顶栏 */
+  header.topbar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 22px; background: rgba(255,255,255,.78);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 20;
+  }
+  .logo { display: flex; align-items: center; gap: 8px; font-family: "ZCOOL KuaiLe", "Noto Sans SC", sans-serif; font-size: 22px; color: var(--brand); letter-spacing: .5px; }
+  .logo .ti { font-size: 24px; }
+  .logo small { font-family: "Noto Sans SC", sans-serif; font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 4px; letter-spacing: 0; }
+  .tabs { margin-left: auto; display: flex; gap: 8px; }
+  .tab {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--line); background: #fff; color: var(--muted);
+    padding: 7px 16px; border-radius: 999px; cursor: pointer; font-size: 14px; font-weight: 600;
+    transition: .18s;
+  }
+  .tab .ti { font-size: 16px; }
+  .tab:hover { color: var(--brand); border-color: var(--brand-soft); }
+  .tab.active { background: linear-gradient(135deg, var(--brand), var(--brand-deep)); color: #fff; border-color: transparent; box-shadow: var(--shadow-sm); }
+  .tab.hidden { display: none; }
+
+  /* 年龄门（玻璃拟态） */
+  .gate-mask {
+    position: fixed; inset: 0;
+    background: rgba(28, 22, 32, .55);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px;
+  }
+  .gate-box {
+    position: relative; background: rgba(255,255,255,.82);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,.7);
+    border-radius: 22px; max-width: 440px; width: 100%;
+    padding: 38px 32px 30px; text-align: center; box-shadow: var(--shadow-lg);
+    animation: gatePop .4s cubic-bezier(.2,.8,.3,1.1);
+  }
+  .gate-box::before {
+    content: ""; position: absolute; left: 24px; right: 24px; top: 0; height: 4px;
+    border-radius: 0 0 4px 4px; background: linear-gradient(90deg, var(--brand), #ffb199);
+  }
+  @keyframes gatePop { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
+  .gate-box h2 { margin: 0 0 8px; font-size: 23px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .gate-box p { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
+  .gate-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 14px; margin: 10px 0; border-radius: 14px;
+    font-size: 15px; font-weight: 700; cursor: pointer; border: none; transition: .18s;
+  }
+  .gate-btn .ti { font-size: 18px; }
+  .gate-adult { background: linear-gradient(135deg, var(--brand), var(--brand-deep)); color: #fff; box-shadow: var(--shadow-sm); }
+  .gate-adult:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .gate-minor { background: var(--brand-soft); color: var(--brand-deep); }
+  .gate-minor:hover { background: #ffd9e4; }
+  .gate-hint { font-size: 12px; color: var(--muted); margin-top: 14px; }
+
+  /* 主体 */
+  main { max-width: 1080px; margin: 0 auto; padding: 22px 20px; }
+  .pane { display: none; }
+  .pane.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .chat-wrap {
+    border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff;
+    height: 560px; box-shadow: var(--shadow-sm);
+  }
+  .chat-wrap iframe { width: 100%; height: 100%; border: 0; }
+  .chat-fallback { padding: 18px; font-size: 14px; color: var(--muted); }
+  .chat-fallback a { color: var(--brand); font-weight: 600; }
+
+  .note {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin: 12px 2px 18px; font-size: 13px; color: #7a4a57;
+    background: var(--brand-soft); border-left: 3px solid var(--brand); padding: 12px 16px; border-radius: 10px;
+  }
+  .note .ti { color: var(--brand-deep); font-size: 18px; margin-top: 1px; flex: 0 0 auto; }
+
+  /* 课程卡 */
+  .section-title { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 800; margin: 28px 2px 14px; }
+  .section-title .ti { color: var(--brand); font-size: 20px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px;
+    cursor: pointer; transition: .18s; box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
+  }
+  .card::after {
+    content: ""; position: absolute; right: -30px; top: -30px; width: 90px; height: 90px;
+    background: radial-gradient(circle, var(--brand-soft) 0%, transparent 70%); opacity: .5; transition: .2s;
+  }
+  .card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--brand-soft); }
+  .card:hover::after { transform: scale(1.3); }
+  .card .ico-wrap {
+    width: 44px; height: 44px; border-radius: 12px; background: var(--brand-soft);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: var(--brand-deep);
+    transition: .18s;
+  }
+  .card:hover .ico-wrap { background: var(--brand); color: #fff; }
+  .card .ico-wrap .ti { font-size: 22px; }
+  .card h3 { margin: 4px 0 6px; font-size: 15px; font-weight: 700; }
+  .card .sum { font-size: 13px; color: var(--muted); margin: 0; }
+  .card .pts { margin: 10px 0 0; padding-left: 18px; font-size: 13px; color: var(--ink); display: none; line-height: 1.7; }
+  .card.open .pts { display: block; animation: fadeIn .25s ease; }
+  .card .pts li { margin: 2px 0; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 30px 10px 50px; }
+</style>
+</head>
+<body>
+
+<!-- ===== 18+ 年龄门 ===== -->
+<div class="gate-mask" id="gate">
+  <div class="gate-box">
+    <h2><i class="ti ti-id-badge-2"></i> 年龄确认</h2>
+    <p>「乐天知性·安心答」分成年版与青少版。请如实选择，我们将为你匹配对应内容。</p>
+    <button class="gate-btn gate-adult" onclick="enter(true)"><i class="ti ti-heart"></i> 我已满 18 周岁 · 进入成年版</button>
+    <button class="gate-btn gate-minor" onclick="enter(false)"><i class="ti ti-seedling"></i> 我未满 18 周岁 · 进入青少版</button>
+    <div class="gate-hint">青少版仅含身体权与健康启蒙内容，不含任何成人性技巧描述。</div>
+  </div>
+</div>
+
+<!-- ===== 顶栏 ===== -->
+<header class="topbar">
+  <div class="logo"><i class="ti ti-heart-handshake"></i> 乐天知性<small>安心答 · GOAI 参赛作品</small></div>
+  <div class="tabs">
+    <button class="tab" id="tab-adult" onclick="switchTab('adult')"><i class="ti ti-heart"></i> 成年版</button>
+    <button class="tab" id="tab-minor" onclick="switchTab('minor')"><i class="ti ti-seedling"></i> 青少版</button>
+  </div>
+</header>
+
+<!-- ===== 主体 ===== -->
+<main>
+  <!-- 成年版 -->
+  <section class="pane" id="pane-adult">
+    <div class="note"><i class="ti ti-info-circle"></i><span>⚠️ 18+ 内容。本版含性健康与亲密关系科普，请理性阅读；如遇心理困扰可随时切换到青少版的健康边界内容。</span></div>
+    <div class="chat-wrap">
+      <iframe id="ifr-adult" title="乐天知性·成年版" allow="microphone"></iframe>
+    </div>
+    <div class="chat-fallback" id="fallback-adult" style="display:none">
+      如对话窗未加载，请确认 Dify 已开启「允许嵌入」，或
+      <a id="link-adult" href="#" target="_blank" rel="noopener">点此在新窗口打开成年版 →</a>
+    </div>
+  </section>
+
+  <!-- 青少版 -->
+  <section class="pane" id="pane-minor">
+    <div class="note"><i class="ti ti-seedling"></i><span>🌱 青少版专注身体权启蒙与健康边界，不含任何成人性技巧描述。下方「身体权启蒙」课程卡可自学。</span></div>
+    <div class="chat-wrap">
+      <iframe id="ifr-minor" title="乐天知性·青少版" allow="microphone"></iframe>
+    </div>
+    <div class="chat-fallback" id="fallback-minor" style="display:none">
+      如对话窗未加载，请确认 Dify 已开启「允许嵌入」，或
+      <a id="link-minor" href="#" target="_blank" rel="noopener">点此在新窗口打开青少版 →</a>
+    </div>
+
+    <div class="section-title"><i class="ti ti-books"></i> 身体权启蒙 · 课程卡</div>
+    <div class="cards" id="cards"></div>
+  </section>
+</main>
+
+<footer>乐天知性 · 安心答 — Global Open-source AI Challenge (GOAI) 参赛作品 · 双版本纵深防御架构</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+/* ============================================================
+   配置区：把下面 4 个占位符换成你 Dify 应用的真实地址
+   ------------------------------------------------------------
+   获取方式（Dify 云端版）：
+   1. 进入对应应用 → 左侧「发布」→ 「嵌入」标签
+   2. 复制 <iframe src="..."> 里的地址，填到 EMBED 处
+   3. 「Web 应用」标签里的地址，填到 WEB 处（作为未开启嵌入时的兜底打开链接）
+   4. 务必在「设置 → 应用」里打开「允许嵌入 (Allow embedding)」
+   ============================================================ */
+  const CONFIG = {
+    adultEmbed: "https://udify.app/embed/REPLACE_WITH_ADULT_EMBED_ID",
+    minorEmbed: "https://udify.app/embed/REPLACE_WITH_MINOR_EMBED_ID",
+    adultWeb:   "https://udify.app/chat/REPLACE_WITH_ADULT_APP_ID",
+    minorWeb:   "https://udify.app/chat/REPLACE_WITH_MINOR_APP_ID"
+  };
+
+  // 课程卡数据（与 e3_cards.json 同步）
+  const CARDS = [
+    {icon:"ti-shield",title:"身体权是什么",sum:"我的身体我做主。任何人（亲戚、老师、对象）都不能强迫你做不舒服的身体接触。",pts:["身体权是基本人权，从童年到老都归你自己","不舒服的触碰有权立刻说“不”并离开","秘密触摸、给钱换接触、让你别告诉家长——都是危险信号"]},
+    {icon:"ti-ban",title:"拒绝不舒服的触碰",sum:"不是所有“大人/长辈”的接触都合理。越界接触有共性特征，识别就能提前防住。",pts:["让你保守秘密的触碰、单独约你去的触碰要警惕","明确说“我不喜欢这样”，并立刻离开现场","事后一定要告诉一个信任的成人；也可以拨 12355 青少年服务台（共青团），或 12338 妇联维权热线"]},
+    {icon:"ti-circle-check",title:"性同意 5 步",sum:"真正的同意是清醒、自愿、可撤回、平等、尊重的。沉默≠同意。",pts:["清醒：醉酒/被下药/睡着了都不构成同意","可撤回：说“好”之后随时可以改主意说“停”","平等：利用年龄、权力、经济差施压都不算自愿"]},
+    {icon:"ti-pill",title:"避孕方法怎么选",sum:"安全套是兼顾避孕+防病的唯一方法；安全期、体外射精是“伪避孕”，失败率极高。",pts:["真实有效：男用套、短效口服药、宫内节育器、皮下埋植","伪避孕：安全期推算、体外射精（失败率 15%-25%）","紧急避孕药是补救不是常规，一年不超过 3 次"]},
+    {icon:"ti-virus",title:"HPV 与疫苗真相",sum:"HPV 靠皮肤接触传播，男女都可能感染；疫苗早打早保护，9-45 岁都能约。",pts:["二价/四价/九价都防最高危的 16、18 型","疫苗不能替代筛查，有性行为后仍需定期宫颈检查","男生接种可保护伴侣，也防自身肛门/口咽病变"]},
+    {icon:"ti-droplet",title:"青春期身体变化",sum:"月经、遗精、长痘、变声都是正常的“出厂设置”，不是羞耻的事。",pts:["月经是子宫内膜脱落，卫生巾 2-4 小时换一次","遗精是男生性成熟的自然现象，不伤身体","第二性征早晚因人而异，没有“标准时间表”"]},
+    {icon:"ti-messages",title:"怎么和爸妈聊性",sum:"开口难但值得。用“第三方话题”破冰，比正面硬聊压力小。",pts:["借新闻/影视角色引出：“你觉得他那样做对吗？”","先问观点再表达自己，避免变成说教现场","被拒接也正常，换书面信或找学校心理老师也行"]},
+    {icon:"ti-alert-triangle",title:"关系暴力的 6 个红灯",sum:"控制、贬低、胁迫、孤立、跟踪、经济控制——占一条就该警惕，不是“他太爱我”。",pts:["贬低：长期否定你的外貌/能力/判断","孤立：不让你见朋友、查手机、限制出门","胁迫：用分手/自杀/曝光隐私逼你就范"]},
+    {icon:"ti-device-mobile",title:"色情报复与裸照",sum:"不拍、不传、不被勒索。一旦被威胁，留证+报警，法律站在你这边。",pts:["“发一张就删”是陷阱，发出去就失去控制","被勒索立刻截图保存证据，别删聊天记录","可报 110（敲诈勒索）并联系平台下架"]},
+    {icon:"ti-lifebuoy",title:"被性侵后怎么办",sum:"不是你的错。保留证据、尽快验伤、找信任的人陪你去求助。",pts:["不要立刻洗澡/洗衣物，保留生物证据","24-72 小时内可到派出所指定医院验伤","求助渠道：正在危险中先打 110；之后可找 12355 青少年服务台 / 12338 妇联维权 / 学校心理中心 / 信任的成人"]},
+    {icon:"ti-spider",title:"网上那些“假装喜欢你”的人",sum:"网上有人用“哥哥/姐姐”“刷礼物”“私下见面”接近你，本质是让你做不舒服甚至违法的事。识别信号 + 法律红线 + 求助这里都有。",pts:["危险信号：要你发私密照片/视频、要礼物或让你刷礼物、约线下单独见面、说“这是我们秘密”、让你别告诉家长","法律红线：未成年人被诱导做与身体或性相关的交易或行为，对方是违法的；你不是自愿、不是你的错，责任在对方","求助：正在危险中立刻打 110；之后可找 12355 青少年服务台（共青团）/ 12338 妇联 / 信任的成人 / 学校心理老师"]}
+  ];
+
+  let userIsAdult = null;
+
+  function enter(isAdult) {
+    userIsAdult = isAdult;
+    try { localStorage.setItem("ltzx_age", isAdult ? "adult" : "minor"); } catch(e){}
+    document.getElementById("gate").style.display = "none";
+    // 未满 18 隐藏成年版入口
+    if (!isAdult) document.getElementById("tab-adult").classList.add("hidden");
+    switchTab(isAdult ? "adult" : "minor");
+  }
+
+  function switchTab(which) {
+    if (which === "adult" && !userIsAdult) return; // 未成年不可进成年版
+    document.getElementById("pane-adult").classList.toggle("active", which === "adult");
+    document.getElementById("pane-minor").classList.toggle("active", which === "minor");
+    document.getElementById("tab-adult").classList.toggle("active", which === "adult");
+    document.getElementById("tab-minor").classList.toggle("active", which === "minor");
+  }
+
+  function renderCards() {
+    const box = document.getElementById("cards");
+    CARDS.forEach((c, i) => {
+      const el = document.createElement("div");
+      el.className = "card";
+      el.setAttribute("data-aos", "fade-up");
+      el.setAttribute("data-aos-delay", String(i * 50));
+      el.innerHTML = `<div class="ico-wrap"><i class="ti ${c.icon}"></i></div><h3>${c.title}</h3><p class="sum">${c.sum}</p><ul class="pts">${c.pts.map(p=>`<li>${p}</li>`).join("")}</ul>`;
+      el.onclick = () => el.classList.toggle("open");
+      box.appendChild(el);
+    });
+  }
+
+  function boot() {
+    renderCards();
+    // 填 iframe / 兜底链接
+    const aIfr = document.getElementById("ifr-adult");
+    const mIfr = document.getElementById("ifr-minor");
+    if (CONFIG.adultEmbed.includes("REPLACE")) { document.getElementById("fallback-adult").style.display="block"; }
+    else { aIfr.src = CONFIG.adultEmbed; }
+    if (CONFIG.minorEmbed.includes("REPLACE")) { document.getElementById("fallback-minor").style.display="block"; }
+    else { mIfr.src = CONFIG.minorEmbed; }
+    document.getElementById("link-adult").href = CONFIG.adultWeb;
+    document.getElementById("link-minor").href = CONFIG.minorWeb;
+
+    // 记住上次选择
+    let saved = null;
+    try { saved = localStorage.getItem("ltzx_age"); } catch(e){}
+    if (saved === "adult" || saved === "minor") {
+      enter(saved === "adult");
+    }
+
+    // 入场动画初始化
+    if (window.AOS) AOS.init({ duration: 600, once: true, offset: 60, easing: "ease-out-cubic" });
+  }
+
+  boot();
+</script>
+</body>
+</html>

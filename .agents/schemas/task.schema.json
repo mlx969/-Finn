@@ -1,0 +1,46 @@
+﻿{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.agent-system/task.schema.json",
+  "title": "Local Agent Task Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "request_id", "title", "from", "to", "status",
+    "priority", "risk", "lane", "created_at", "updated_at", "objective",
+    "constraints", "acceptance_criteria", "allowed_paths", "forbidden_paths",
+    "depends_on", "human_gate"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "request_id": {"type": "string", "pattern": "^REQ-[A-Za-z0-9-]+$"},
+    "title": {"type": "string", "minLength": 1},
+    "from": {"type": "string", "minLength": 1},
+    "to": {"type": "string", "minLength": 1},
+    "status": {"enum": ["pending", "running", "blocked", "needs_review", "done", "failed"]},
+    "priority": {"enum": ["low", "normal", "high", "urgent"]},
+    "risk": {"enum": ["low", "medium", "high"]},
+    "lane": {"type": "string", "pattern": "^[A-Za-z0-9._-]+$"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "objective": {"type": "string", "minLength": 1},
+    "context": {"type": "string"},
+    "constraints": {"type": "array", "items": {"type": "string"}},
+    "acceptance_criteria": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "allowed_paths": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "forbidden_paths": {"type": "array", "items": {"type": "string"}},
+    "depends_on": {"type": "array", "items": {"type": "string"}},
+    "openspec_change": {"type": ["string", "null"]},
+    "human_gate": {"type": "boolean"},
+    "claimed_by": {"type": ["string", "null"]},
+    "lease": {
+      "type": ["object", "null"],
+      "required": ["lock_path", "claimed_at", "expires_at"],
+      "properties": {
+        "lock_path": {"type": "string"},
+        "claimed_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": "string", "format": "date-time"}
+      }
+    }
+  }
+}
+

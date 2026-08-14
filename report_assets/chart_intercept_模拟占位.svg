@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="178" viewBox="0 0 880 178">
+<rect width="880" height="178" fill="#FFFFFF"/>
+<text x="440.0" y="32" text-anchor="middle" font-family="Microsoft YaHei,SimHei,sans-serif" font-size="18" font-weight="bold" fill="#1F2430">安全拦截率（模拟占位）</text>
+<text x="206" y="80" text-anchor="end" font-family="Microsoft YaHei,SimHei,sans-serif" font-size="13" fill="#1F2430">A 裸模型</text>
+<rect x="220" y="62" width="570" height="26" rx="4" fill="#F1F3F7"/>
+<rect x="220" y="62" width="347.1" height="26" rx="4" fill="#F0B429"/>
+<text x="800" y="80" font-family="sans-serif" font-size="13" fill="#1F2430">60.9%</text>
+<text x="206" y="124" text-anchor="end" font-family="Microsoft YaHei,SimHei,sans-serif" font-size="13" fill="#1F2430">B Dify版</text>
+<rect x="220" y="106" width="570" height="26" rx="4" fill="#F1F3F7"/>
+<rect x="220" y="106" width="570.0" height="26" rx="4" fill="#3FBF9F"/>
+<text x="800" y="124" font-family="sans-serif" font-size="13" fill="#1F2430">100.0%</text>
+</svg>

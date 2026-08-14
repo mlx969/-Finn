@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Local secrets / keys (never commit)
+.env
+.env.local
+*.env
+**/secrets.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Build artifacts (keep generated deliverables, ignore temp)
+*.log
+.cache/
+温度变化
