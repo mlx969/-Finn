@@ -2,7 +2,7 @@
 
 > 🎯 **目标**：8/15（周五）产出可提交的 MVP；8/16（周六）前在 GOAI 官网完成初赛提交。
 > 🛡️ **底线**：18+ 硬门槛 / 7 条安全规则 / API Key 不落库 / 不抄蛇哥原话 / 仅项目目录内写文件。
-> ⏰ **今日标记**：8/13（周四）心跳。Day 10（PPT/PDF）已于 8/12 晚提前交付，本轮按"领先则推进下一项"推进到 **Day 11 提交自检**：交付 1 件 `submission_checklist.md`（11 类物料逐项状态 + 红线复审 + 数据可信度 + GitHub 准备 + 故障预案 + 8/16 提交剧本 + 缺口风险 + 待拍板汇总）。已复扫 Key 泄漏（✅ 干净，仅 smoke_test.py 命中脱敏占位 sk-****）。新增 OPEN_ISSUES **G1**（提交表单字段确认）。Day 4 红队 / Day 5 论坛 / Day 9 报告真值仍卡 A5（kb_adult 检索空）。Day 12（8/15 冻结）仍有完整缓冲。
+> ⏰ **今日标记**：8/14（周五）晚心跳收尾推进到 **Day 12 MVP 冻结**：交付 `MVP_FREEZE_RELEASE.md`（冻结说明 / 红线自检 / 提交剧本）+ 本地 git 打标签 `v1.0-freeze` + 全仓密钥复扫 0 命中。A5（kb_adult 检索空）仍未闭环但**不阻塞提交**；Day 4 红队 / Day 5 论坛同待 A5。Day 11 自检清单已于 8/13 提前交付。
 
 ---
 
@@ -173,12 +173,16 @@ python eval_scorer.py --result "A 裸模型=scores/a_bare.json" --result "B Dify
 - [x] `submission_checklist.md` —— 初赛提交自检清单：11 类物料逐项状态（9 类就绪 / GitHub 仓库 Day 12 必做 / 视频 mp4 可后补）+ 硬性红线复审（18+ 门 / 7 条规则 / Key 不落库 grep 复扫 ✅ 干净）+ 数据可信度（C1/C6 待你回溯）+ GitHub 仓库准备步骤 + 故障预案表 + 8/16 提交当天剧本 + 已知缺口风险（A5 / Day4/5）+ 待拍板汇总（G1/A5/C1/C6/A2）。不依赖 A5 真值即可完成，不阻塞提交。
 - **交付物**：`submission_checklist.md` ✅（GitHub 仓库 / LICENSE 属 Day 12 冻结动作）
 
-### Day 12 · 8/15 MVP 冻结 🎯
-**关键任务**：
-- [ ] 全套交付物打包（仓库 / 报告 / PPT / 视频）
-- [ ] GitHub 仓库 `README` 写好 / 加 LICENSE / 加 topics
-- [ ] 心跳任务可暂停 / 收尾
-- **交付物**：冻结版 v1.0
+### Day 12 · 8/15 MVP 冻结 🎯 ✅ 本轮（8/14 晚）已收尾
+**本轮已交付 ✅**：
+- [x] `MVP_FREEZE_RELEASE.md` —— 冻结说明：v1.0 完整交付物清单（七类 40+ 文件）+ 红线合规自检（6 条全过、密钥复扫 0 命中）+ 已知缺口与阻塞判定 + 8/16 提交剧本指针 + 版本记录 + 待拍板汇总。
+- [x] 本地 git 仓库补打标签 `v1.0-freeze`（3 个提交，未 push；按你 8/14「本地建仓+提交不 push」决策）。
+- [x] `README.md` 结构树补 `MVP_FREEZE_RELEASE.md` 入口 + v1.0 全量清单指针。
+- [x] 全仓 grep 真实密钥模式（sk-/AKIA/api_key/secret/password）→ **0 命中**，红线③确认。
+**未做（按红线⑤/⑥ + 你 8/14 决策，非本智能体职责）**：
+- GitHub **push 公开仓** 待你提供远程/授权；8/16 提交待你手动在 goaihz.com 完成；原型部署（Cloudflare）待你给限定域名短效 Token。
+- [ ] GitHub 仓库 topics（需 push 后在 GitHub.com 设置，本地不可设）。
+- **交付物**：冻结版 v1.0（标签 `v1.0-freeze`）+ `MVP_FREEZE_RELEASE.md` ✅
 
 ### 🚨 Day 13 · 8/16 初赛提交
 **关键任务**：

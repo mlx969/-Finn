@@ -41,7 +41,10 @@
 ├── MVP_TIMELINE.md         # 12 天 MVP 冲刺表
 ├── OPEN_ISSUES.md          # 待用户核对问题清单
 └── README.md               # 本文件
+└── MVP_FREEZE_RELEASE.md    # MVP v1.0 冻结说明（交付物总清单+红线自检+提交剧本）
 ```
+
+> 📦 **v1.0 完整交付物（共 40+ 文件）按模块分组清单见 `MVP_FREEZE_RELEASE.md` 第二节**，分为核心原型 / 知识库 / 评测红队 / 社区课程 / 报告PPT / 品牌商业 / 开源管理七类。
 
 ---
 
