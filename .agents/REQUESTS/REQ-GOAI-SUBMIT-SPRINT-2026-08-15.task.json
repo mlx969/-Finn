@@ -1,0 +1,51 @@
+﻿{
+    "schema_version":  "1.0",
+    "request_id":  "REQ-GOAI-SUBMIT-SPRINT-2026-08-15",
+    "title":  "GOAI 赛前冲刺收口：把项目推进到诚实可提交态",
+    "from":  "human",
+    "to":  "workbuddy",
+    "status":  "running",
+    "priority":  "urgent",
+    "risk":  "medium",
+    "lane":  "implementation",
+    "created_at":  "2026-08-15T11:50:48+08:00",
+    "updated_at":  "2026-08-15T11:50:54.7755284+08:00",
+    "objective":  "按赛前冲刺执行单执行阶段0-6：建立真实基线；让Demo真正可体验（离线兜底+可选真实Dify）；收紧安全与医学口径；修复评测链路；强化AI教育主线；统一所有交付物（README/报告/PPT/PDF）；最终验收与提交包。",
+    "context":  "Codex评审指出方案叙事强但真实MVP未达可验证提交态，最大风险=评委打开看不到真实AI且实现与PPT不一致。",
+    "constraints":  [
+                        "不把任何 API Key/Token/Cookie 写入文件、Git、日志或聊天，只从环境变量读取",
+                        "不把 mock/dry-run/正则启发式评分写成真实模型效果",
+                        "ShieldLM/LlamaGuard/DFA/身份token路由/四层审核不得写成已部署（除非有运行链路与测试证据）",
+                        "不弱化年龄分流、未成年人保护、色情禁止、危机转介边界",
+                        "严格区分 已实现并验证 / 已实现未验证 / 设计中",
+                        "不越过人工门禁（GitHub push / Cloudflare 部署 / 操作 Dify GOAI 邮箱 / 真实Key计费 / 最终提交 / 合规背书）"
+                    ],
+    "acceptance_criteria":  [
+                                "评委通过公开URL或明确本地入口30秒内完成至少一次可见交互",
+                                "页面无 REPLACE_WITH_*、空iframe、失效按钮或不存在的功能",
+                                "README/报告/PPT/PDF 对已实现/规划中描述与代码一致",
+                                "课程卡无无来源的硬性医疗次数/年龄/时限结论",
+                                "青少版与成人版提示词采用同一份有效热线白名单口径",
+                                "评测脚本断点续跑/空回答统计/危机转介判定已修复并有自动测试",
+                                "仓库内 mock 结果明确标注 mock；无真实评测不展示效果提升结论",
+                                "生成最终验收记录，含命令/实际输出/残余风险/需用户完成的人工门禁"
+                            ],
+    "allowed_paths":  [
+                          "C:\\ProgramData\\WorkBuddy\\users\\17d0d283\\WorkBuddy\\idea\\安心答-GOAI"
+                      ],
+    "forbidden_paths":  [
+                            ".env",
+                            "**/secrets/**",
+                            "credentials"
+                        ],
+    "depends_on":  [
+
+                   ],
+    "human_gate":  true,
+    "claimed_by":  "workbuddy",
+    "lease":  {
+                  "lock_path":  ".agents/LOCKS/implementation.lock.json",
+                  "claimed_at":  "2026-08-15T11:50:54.7277039+08:00",
+                  "expires_at":  "2026-08-15T19:50:54.7277039+08:00"
+              }
+}

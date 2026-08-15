@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>乐天知性 · 安心答 | GOAI 参赛作品</title>
 
-<!-- ===== 轮子：字体 / 图标 / 动画（全部 CDN，零构建） ===== -->
+<!-- ===== 轮子：字体 / 图标 / 动画（全部 CDN，零构建；离线时自动降级，不影响演示） ===== -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
@@ -104,20 +104,58 @@
   .pane.active { display: block; animation: fadeIn .35s ease; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
-  .chat-wrap {
-    border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff;
-    height: 560px; box-shadow: var(--shadow-sm);
-  }
-  .chat-wrap iframe { width: 100%; height: 100%; border: 0; }
-  .chat-fallback { padding: 18px; font-size: 14px; color: var(--muted); }
-  .chat-fallback a { color: var(--brand); font-weight: 600; }
-
   .note {
     display: flex; align-items: flex-start; gap: 10px;
     margin: 12px 2px 18px; font-size: 13px; color: #7a4a57;
     background: var(--brand-soft); border-left: 3px solid var(--brand); padding: 12px 16px; border-radius: 10px;
   }
   .note .ti { color: var(--brand-deep); font-size: 18px; margin-top: 1px; flex: 0 0 auto; }
+  .note.warn { color: #7a5a2a; background: #fff4e2; border-left-color: #ffb454; }
+  .note.warn .ti { color: #e0962a; }
+
+  /* 60 秒体验路径 */
+  .path {
+    display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 2px 18px;
+  }
+  .path .step {
+    display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600;
+    background: #fff; border: 1px dashed var(--brand); color: var(--brand-deep);
+    padding: 8px 14px; border-radius: 999px;
+  }
+  .path .step .num {
+    width: 20px; height: 20px; border-radius: 50%; background: var(--brand); color: #fff;
+    display: inline-flex; align-items: center; justify-content: center; font-size: 12px; flex: 0 0 auto;
+  }
+
+  /* 本地演示：对话面板 */
+  .demo {
+    border: 1px solid var(--line); border-radius: var(--radius); background: #fff;
+    box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 18px;
+  }
+  .demo-head {
+    display: flex; align-items: center; gap: 8px; padding: 12px 16px;
+    background: linear-gradient(135deg, var(--brand-tint), #fff); border-bottom: 1px solid var(--line);
+    font-size: 14px; font-weight: 700; color: var(--brand-deep);
+  }
+  .demo-head .tag {
+    margin-left: auto; font-size: 11px; font-weight: 700; color: #b07; background: #ffe3ee;
+    padding: 2px 10px; border-radius: 999px; letter-spacing: .3px;
+  }
+  .demo-q {
+    display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--line);
+  }
+  .demo-q button {
+    font-size: 13px; cursor: pointer; border: 1px solid var(--brand-soft); background: #fff;
+    color: var(--brand-deep); padding: 7px 12px; border-radius: 999px; transition: .15s; text-align: left;
+  }
+  .demo-q button:hover { background: var(--brand-soft); }
+  .demo-log {
+    padding: 14px 16px; min-height: 60px; max-height: 360px; overflow-y: auto; font-size: 14px;
+  }
+  .bubble { margin: 8px 0; padding: 10px 14px; border-radius: 14px; max-width: 92%; line-height: 1.6; }
+  .bubble.u { background: var(--brand); color: #fff; margin-left: auto; border-bottom-right-radius: 4px; }
+  .bubble.a { background: var(--brand-tint); color: var(--ink); border-bottom-left-radius: 4px; }
+  .bubble.a .who { display: block; font-size: 11px; color: var(--muted); margin-bottom: 3px; }
 
   /* 课程卡 */
   .section-title { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 800; margin: 28px 2px 14px; }
@@ -145,6 +183,9 @@
   .card .pts { margin: 10px 0 0; padding-left: 18px; font-size: 13px; color: var(--ink); display: none; line-height: 1.7; }
   .card.open .pts { display: block; animation: fadeIn .25s ease; }
   .card .pts li { margin: 2px 0; }
+
+  .ext-link { font-size: 13px; color: var(--muted); margin: 22px 2px 0; }
+  .ext-link a { color: var(--brand); font-weight: 600; }
   footer { text-align: center; color: var(--muted); font-size: 12px; padding: 30px 10px 50px; }
 </style>
 </head>
@@ -172,67 +213,90 @@
 
 <!-- ===== 主体 ===== -->
 <main>
+  <!-- 全局演示声明 -->
+  <div class="note warn"><i class="ti ti-info-circle"></i><span><b>本地演示声明</b>：本页为教育辅助工具的<b>高保真原型</b>，下方问答是<b>预设的本地演示样例（非实时 AI）</b>，断网也能查看，<b>不会上传任何输入</b>。它不替代医疗、心理、法律服务。如需实时 AI，需接入已部署且经评审的 Dify 应用（参赛版暂未开放公网嵌入）。</span></div>
+
   <!-- 成年版 -->
   <section class="pane" id="pane-adult">
     <div class="note"><i class="ti ti-info-circle"></i><span>⚠️ 18+ 内容。本版含性健康与亲密关系科普，请理性阅读；如遇心理困扰可随时切换到青少版的健康边界内容。</span></div>
-    <div class="chat-wrap">
-      <iframe id="ifr-adult" title="乐天知性·成年版" allow="microphone"></iframe>
+
+    <div class="demo">
+      <div class="demo-head"><i class="ti ti-heart"></i> 成年版 · 互动练习（本地演示样例）<span class="tag">预设回答 · 非实时 AI</span></div>
+      <div class="demo-q" id="q-adult"></div>
+      <div class="demo-log" id="log-adult"></div>
     </div>
-    <div class="chat-fallback" id="fallback-adult" style="display:none">
-      如对话窗未加载，请确认 Dify 已开启「允许嵌入」，或
-      <a id="link-adult" href="#" target="_blank" rel="noopener">点此在新窗口打开成年版 →</a>
-    </div>
+
+    <div class="ext-link">扩展内容（非参赛教育主线）：<a href="adult_expo.html" target="_blank" rel="noopener">成人健康展讯（聚合展示，仅外链官方资源）→</a></div>
   </section>
 
   <!-- 青少版 -->
   <section class="pane" id="pane-minor">
-    <div class="note"><i class="ti ti-seedling"></i><span>🌱 青少版专注身体权启蒙与健康边界，不含任何成人性技巧描述。下方「身体权启蒙」课程卡可自学。</span></div>
-    <div class="chat-wrap">
-      <iframe id="ifr-minor" title="乐天知性·青少版" allow="microphone"></iframe>
-    </div>
-    <div class="chat-fallback" id="fallback-minor" style="display:none">
-      如对话窗未加载，请确认 Dify 已开启「允许嵌入」，或
-      <a id="link-minor" href="#" target="_blank" rel="noopener">点此在新窗口打开青少版 →</a>
+    <div class="note"><i class="ti ti-seedling"></i><span>🌱 青少版专注身体权启蒙与健康边界，不含任何成人性技巧描述。下方「身体权启蒙」课程卡可自学，互动练习给出示范回答。</span></div>
+
+    <div class="path">
+      <span class="step"><span class="num">1</span> 选「未满 18」进青少版</span>
+      <span class="step"><span class="num">2</span> 点开任意课程卡看要点</span>
+      <span class="step"><span class="num">3</span> 点「互动练习」里的示例问题看一次示范回答</span>
     </div>
 
-    <div class="section-title"><i class="ti ti-books"></i> 身体权启蒙 · 课程卡</div>
+    <div class="demo">
+      <div class="demo-head"><i class="ti ti-seedling"></i> 青少版 · 互动练习（本地演示样例）<span class="tag">预设回答 · 非实时 AI</span></div>
+      <div class="demo-q" id="q-minor"></div>
+      <div class="demo-log" id="log-minor"></div>
+    </div>
+
+    <div class="section-title"><i class="ti ti-books"></i> 身体权启蒙 · 课程卡（11 张）</div>
     <div class="cards" id="cards"></div>
   </section>
 </main>
 
-<footer>乐天知性 · 安心答 — Global Open-source AI Challenge (GOAI) 参赛作品 · 双版本纵深防御架构</footer>
+<footer>乐天知性 · 安心答 — Global Open-source AI Challenge (GOAI) 参赛作品 · 分龄性健康教育系统</footer>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 /* ============================================================
-   配置区：把下面 4 个占位符换成你 Dify 应用的真实地址
+   可选「真实 Dify 接入」配置
    ------------------------------------------------------------
-   获取方式（Dify 云端版）：
-   1. 进入对应应用 → 左侧「发布」→ 「嵌入」标签
-   2. 复制 <iframe src="..."> 里的地址，填到 EMBED 处
-   3. 「Web 应用」标签里的地址，填到 WEB 处（作为未开启嵌入时的兜底打开链接）
-   4. 务必在「设置 → 应用」里打开「允许嵌入 (Allow embedding)」
+   当前为离线本地演示（无网络依赖）。若你已部署 Dify 应用并开启
+   「允许嵌入 (Allow embedding)」，把下方 USE_LIVE_DIFY 改为 true
+   并填入真实 Embed/Web 地址，页面会用 iframe 替换本地演示。
+   注意：Dify Cloud 处理对话时，数据保存策略以 Dify 平台为准。
    ============================================================ */
   const CONFIG = {
-    adultEmbed: "https://udify.app/embed/REPLACE_WITH_ADULT_EMBED_ID",
-    minorEmbed: "https://udify.app/embed/REPLACE_WITH_MINOR_EMBED_ID",
-    adultWeb:   "https://udify.app/chat/REPLACE_WITH_ADULT_APP_ID",
-    minorWeb:   "https://udify.app/chat/REPLACE_WITH_MINOR_APP_ID"
+    USE_LIVE_DIFY: false,
+    adultEmbed: "",   // 例：https://udify.app/embed/xxxxxxxx
+    minorEmbed: "",
+    adultWeb:   "",
+    minorWeb:   ""
   };
 
-  // 课程卡数据（与 e3_cards.json 同步）
+  // 课程卡数据（与 e3_cards.json 同步，共 11 张）
   const CARDS = [
     {icon:"ti-shield",title:"身体权是什么",sum:"我的身体我做主。任何人（亲戚、老师、对象）都不能强迫你做不舒服的身体接触。",pts:["身体权是基本人权，从童年到老都归你自己","不舒服的触碰有权立刻说“不”并离开","秘密触摸、给钱换接触、让你别告诉家长——都是危险信号"]},
     {icon:"ti-ban",title:"拒绝不舒服的触碰",sum:"不是所有“大人/长辈”的接触都合理。越界接触有共性特征，识别就能提前防住。",pts:["让你保守秘密的触碰、单独约你去的触碰要警惕","明确说“我不喜欢这样”，并立刻离开现场","事后一定要告诉一个信任的成人；也可以拨 12355 青少年服务台（共青团），或 12338 妇联维权热线"]},
     {icon:"ti-circle-check",title:"性同意 5 步",sum:"真正的同意是清醒、自愿、可撤回、平等、尊重的。沉默≠同意。",pts:["清醒：醉酒/被下药/睡着了都不构成同意","可撤回：说“好”之后随时可以改主意说“停”","平等：利用年龄、权力、经济差施压都不算自愿"]},
-    {icon:"ti-pill",title:"避孕方法怎么选",sum:"安全套是兼顾避孕+防病的唯一方法；安全期、体外射精是“伪避孕”，失败率极高。",pts:["真实有效：男用套、短效口服药、宫内节育器、皮下埋植","伪避孕：安全期推算、体外射精（失败率 15%-25%）","紧急避孕药是补救不是常规，一年不超过 3 次"]},
-    {icon:"ti-virus",title:"HPV 与疫苗真相",sum:"HPV 靠皮肤接触传播，男女都可能感染；疫苗早打早保护，9-45 岁都能约。",pts:["二价/四价/九价都防最高危的 16、18 型","疫苗不能替代筛查，有性行为后仍需定期宫颈检查","男生接种可保护伴侣，也防自身肛门/口咽病变"]},
+    {icon:"ti-pill",title:"避孕方法怎么选",sum:"安全套是兼顾避孕+防病的唯一方法；安全期、体外射精是“伪避孕”，失败率较高。",pts:["真实有效：男用套、短效口服药、宫内节育器、皮下埋植","伪避孕：安全期推算、体外射精（失败率约 15%–25%）","紧急避孕药是补救不是常规避孕方式；具体用法请按药品说明或咨询医生/药师"]},
+    {icon:"ti-virus",title:"HPV 与疫苗真相",sum:"HPV 靠皮肤接触传播，男女都可能感染；疫苗早打早保护，适用年龄与产品批准范围因地区和疫苗种类而异。",pts:["二价/四价/九价都防最高危的 16、18 型","疫苗不能替代筛查，有性行为后仍需定期宫颈检查","男生接种可保护伴侣，也防自身肛门/口咽病变；以当地接种门诊为准"]},
     {icon:"ti-droplet",title:"青春期身体变化",sum:"月经、遗精、长痘、变声都是正常的“出厂设置”，不是羞耻的事。",pts:["月经是子宫内膜脱落，卫生巾 2-4 小时换一次","遗精是男生性成熟的自然现象，不伤身体","第二性征早晚因人而异，没有“标准时间表”"]},
     {icon:"ti-messages",title:"怎么和爸妈聊性",sum:"开口难但值得。用“第三方话题”破冰，比正面硬聊压力小。",pts:["借新闻/影视角色引出：“你觉得他那样做对吗？”","先问观点再表达自己，避免变成说教现场","被拒接也正常，换书面信或找学校心理老师也行"]},
     {icon:"ti-alert-triangle",title:"关系暴力的 6 个红灯",sum:"控制、贬低、胁迫、孤立、跟踪、经济控制——占一条就该警惕，不是“他太爱我”。",pts:["贬低：长期否定你的外貌/能力/判断","孤立：不让你见朋友、查手机、限制出门","胁迫：用分手/自杀/曝光隐私逼你就范"]},
     {icon:"ti-device-mobile",title:"色情报复与裸照",sum:"不拍、不传、不被勒索。一旦被威胁，留证+报警，法律站在你这边。",pts:["“发一张就删”是陷阱，发出去就失去控制","被勒索立刻截图保存证据，别删聊天记录","可报 110（敲诈勒索）并联系平台下架"]},
-    {icon:"ti-lifebuoy",title:"被性侵后怎么办",sum:"不是你的错。保留证据、尽快验伤、找信任的人陪你去求助。",pts:["不要立刻洗澡/洗衣物，保留生物证据","24-72 小时内可到派出所指定医院验伤","求助渠道：正在危险中先打 110；之后可找 12355 青少年服务台 / 12338 妇联维权 / 学校心理中心 / 信任的成人"]},
+    {icon:"ti-lifebuoy",title:"被性侵后怎么办",sum:"不是你的错。保留证据、在安全后尽快报警就医、找信任的人陪你去求助。",pts:["不要立刻洗澡/洗衣物，保留生物证据","在确保安全后尽快报警、就医并咨询取证安排；不因超过某个时限就放弃求助","求助渠道：正在危险中先打 110；之后可找 12355 青少年服务台 / 12338 妇联维权 / 学校心理中心 / 信任的成人"]},
     {icon:"ti-spider",title:"网上那些“假装喜欢你”的人",sum:"网上有人用“哥哥/姐姐”“刷礼物”“私下见面”接近你，本质是让你做不舒服甚至违法的事。识别信号 + 法律红线 + 求助这里都有。",pts:["危险信号：要你发私密照片/视频、要礼物或让你刷礼物、约线下单独见面、说“这是我们秘密”、让你别告诉家长","法律红线：未成年人被诱导做与身体或性相关的交易或行为，对方是违法的；你不是自愿、不是你的错，责任在对方","求助：正在危险中立刻打 110；之后可找 12355 青少年服务台（共青团）/ 12338 妇联 / 信任的成人 / 学校心理老师"]}
+  ];
+
+  // 本地演示样例（预设回答，非实时 AI；口径与 KB_CRISIS_HOTLINES.md 已核实白名单一致）
+  const DEMO_ADULT = [
+    {q:"什么是性同意？", a:"真正的同意 = 清醒、自愿、可撤回、平等、尊重。沉默不等于同意；说“好”之后随时可以改主意说“停”；用年龄、权力或经济差施压，都不算自愿。"},
+    {q:"避孕怎么选？安全套和紧急避孕药有啥区别？", a:"安全套是唯一兼顾避孕 + 防病的。安全期、体外射精失败率较高，不是可靠避孕。紧急避孕药是补救不是常规避孕方式；具体用法请按药品说明或咨询医生/药师。"},
+    {q:"伴侣之间怎么沟通边界和舒服的事？", a:"用“我”开头表达：“我喜欢……”“我不舒服……”。先问对方意愿再行动；任何接触对方说停就停。尊重彼此的“不”，比技巧更重要。"}
+  ];
+  const DEMO_MINOR = [
+    {q:"好朋友总爱拍我肩膀摸我头，我有点烦但不敢说，怎么办？", a:"你的身体边界你做主。不舒服就直接说“我不喜欢这样，请别碰我”；对方不听就告诉老师或家长。你没做错，是对方越界了。"},
+    {q:"有网友说想看我照片，我发了一张自拍他还要更私密的，怎么办？", a:"立刻停！别再发任何照片。真正为你好的人不会这样要求。拉黑他、告诉信任的大人，必要时打 110 报警。你没做错什么，责任在对方。"},
+    {q:"青春期为什么会长痘、变声，是不是我发育不正常？", a:"月经、遗精、长痘、变声都是正常的“出厂设置”，每个人早晚不同，没有标准时间表。这是身体在长大，不是羞耻的事。"},
+    {q:"网上有人说“哥哥带你赚钱”，要我私下见面，安全吗？", a:"危险信号：要私密照、要礼物、约线下单独见面、说“这是我们秘密”、让你别告诉家长。立刻停止联系、告诉信任的大人。你不是自愿、不是你的错。"},
+    {q:"如果我遇到危险，该打什么电话？", a:"正在发生危险先打 110（报警）/ 120（急救）。之后可以找 12355 青少年服务台（共青团）、12338 妇联维权热线、信任的成人或学校心理老师。"}
   ];
 
   let userIsAdult = null;
@@ -241,7 +305,6 @@
     userIsAdult = isAdult;
     try { localStorage.setItem("ltzx_age", isAdult ? "adult" : "minor"); } catch(e){}
     document.getElementById("gate").style.display = "none";
-    // 未满 18 隐藏成年版入口
     if (!isAdult) document.getElementById("tab-adult").classList.add("hidden");
     switchTab(isAdult ? "adult" : "minor");
   }
@@ -267,17 +330,29 @@
     });
   }
 
+  function buildDemo(listId, logId, data) {
+    const qBox = document.getElementById(listId);
+    const log = document.getElementById(logId);
+    data.forEach((item) => {
+      const b = document.createElement("button");
+      b.textContent = item.q;
+      b.onclick = () => {
+        const u = document.createElement("div");
+        u.className = "bubble u"; u.textContent = item.q;
+        const a = document.createElement("div");
+        a.className = "bubble a";
+        a.innerHTML = `<span class="who">本地演示样例（非实时 AI）</span>${item.a}`;
+        log.appendChild(u); log.appendChild(a);
+        log.scrollTop = log.scrollHeight;
+      };
+      qBox.appendChild(b);
+    });
+  }
+
   function boot() {
     renderCards();
-    // 填 iframe / 兜底链接
-    const aIfr = document.getElementById("ifr-adult");
-    const mIfr = document.getElementById("ifr-minor");
-    if (CONFIG.adultEmbed.includes("REPLACE")) { document.getElementById("fallback-adult").style.display="block"; }
-    else { aIfr.src = CONFIG.adultEmbed; }
-    if (CONFIG.minorEmbed.includes("REPLACE")) { document.getElementById("fallback-minor").style.display="block"; }
-    else { mIfr.src = CONFIG.minorEmbed; }
-    document.getElementById("link-adult").href = CONFIG.adultWeb;
-    document.getElementById("link-minor").href = CONFIG.minorWeb;
+    buildDemo("q-adult", "log-adult", DEMO_ADULT);
+    buildDemo("q-minor", "log-minor", DEMO_MINOR);
 
     // 记住上次选择
     let saved = null;
@@ -286,7 +361,6 @@
       enter(saved === "adult");
     }
 
-    // 入场动画初始化
     if (window.AOS) AOS.init({ duration: 600, once: true, offset: 60, easing: "ease-out-cubic" });
   }
 
