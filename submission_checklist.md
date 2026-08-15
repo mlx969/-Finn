@@ -10,7 +10,7 @@
 
 | # | 物料 | 状态 | 当前文件 / 位置 | 备注 |
 |---|---|---|---|---|
-| 1 | GitHub 仓库 | ⏳ 本地已建仓（未推送远程） | 本地 `git` 已初始化并提交各 Phase；远程推送待你授权仓库地址后执行 | 远程 push 属人工门禁，未经你确认不推送 |
+| 1 | GitHub 仓库 | ✅ 已推送 | `https://github.com/mlx969/-Finn.git`（master 分支，已含全部 Phase 提交至 36b6164） | 2026-08-15 经你授权仓库地址后由本智能体 `git push` 完成 |
 | 2 | 演示原型 | ✅ 就绪 | `index.html`（单文件，已接阶跃 router；演示模式免联网） | 浏览器双击即开 |
 | 3 | 12 章分析报告 | ✅ 就绪（真值待回填） | `REPORT_安心答_分析报告.md` | 评测章客观数据待 A5 闭环后回填 |
 | 4 | 图表资产 | ✅ 就绪（占位） | `report_assets/`（标题含"模拟占位"） | A5 闭环后一键替换为 `tag 实测v1` |
@@ -22,7 +22,7 @@
 | 10 | 安全规则文档 | ✅ 就绪 | `SYSTEM_PROMPT.md`（成年版 7 条）+ `SYSTEM_PROMPT_MINOR.md`（青少版更严） | 红线条目化 |
 | 11 | 知识库索引 / 源 | ✅ 就绪 | `kb_index_v0.json` + `knowledge_base_v1.md` + `KB_CRISIS_HOTLINES.md` | 版权边界见 `DATA_STRATEGY.md` |
 
-**结论**：11 类中 9 类已就绪，1 类（GitHub 仓库）Day 12 必做，1 类（视频 mp4）可后补不阻塞。
+**结论**：11 类中 10 类已就绪，1 类（视频 mp4）可后补不阻塞；GitHub 仓库已于 2026-08-15 推送至 `mlx969/-Finn`。
 
 ---
 
@@ -61,16 +61,15 @@
 
 ---
 
-## 四、GitHub 仓库准备（Day 12 执行，不阻塞但强烈建议有）
+## 四、GitHub 仓库（已于 2026-08-15 完成推送）
 
-> 当前目录**本地 Git 已建仓并提交**（各 Phase 均已 commit），但远程仓库尚未关联/推送——开源是赛道加分项（报告 §各章），远程 push 属人工门禁，需你确认仓库地址后再执行。
+> 远程仓库 `https://github.com/mlx969/-Finn.git` 已关联并推送（分支 `master`，含全部 Phase 提交至 `36b6164`）。开源为赛道加分项（报告 §各章）。
 
-- [ ] `git init` → `git add -A` → `git commit -m "MVP v1.0 乐天知性·安心答"`
-- [ ] `git remote add origin <你的仓库地址>` → `git push -u origin main`
-- [ ] 仓库根加 **`LICENSE`**（MIT，已决策 B4）—— 可让本智能体直接生成，你确认即可。
-- [ ] 仓库加 **`README.md`**（若现有 README 需补：项目简介 / 架构图 / 快速开始 / 安全合规声明 / 开源协议 / 联系）。
-- [ ] 设 **topics**：`ai` `sex-education` `dify` `rag` `safety` `goai` `stepfun`。
-- [ ] 私人凭据（Key / 截图里的明文）不得进仓库；上传前再跑一次第二节的 grep。
+- [x] `git init` → `git add -A` → 各 Phase 已 commit
+- [x] `git remote add origin https://github.com/mlx969/-Finn.git` → `git push -u origin master`（2026-08-15 经你授权）
+- [ ] 仓库根加 **`LICENSE`**（MIT，已决策 B4）—— 可选，你确认后本智能体直接生成并补推。
+- [ ] 设 **topics**：`ai` `sex-education` `dify` `rag` `safety` `goai` `stepfun`（在 GitHub 网页端设置，或你确认后我写说明）。
+- [x] 私人凭据（Key / 明文）未进仓库；push 前已跑密钥扫描（0 命中）。
 
 ---
 
