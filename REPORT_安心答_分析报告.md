@@ -455,8 +455,8 @@ MVP 阶段做「设计完整 + 实现单版」：报告与演示把双版本架�
 | 未成年版 SYSTEM_PROMPT_MINOR | 已建（12–15 段，规则更严） |
 | 成人展讯页 adult_expo.html | 已建（二次 18+ 验证，只聚合不撮合） |
 | 方案 PPT（18 页）/ PDF（1 页） | 已产出 |
-| Demo 视频 | 仅脚本（`demo_video_script.md`），mp4 可后补（非必填） |
-| 公开 GitHub 仓库 | 待建仓推送（MIT LICENSE 已备） |
+| Demo 视频 | 已提供演示视频（media/）与可运行线上 Demo（finnml.cc.cd，Dify 双版本已接入）；视频脚本见 `demo_video_script.md` |
+| 公开 GitHub 仓库 | 已建仓并推送（public，MIT LICENSE 已备） |
 
 ---
 

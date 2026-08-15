@@ -29,6 +29,12 @@ import os
 import statistics
 import sys
 import time
+
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+except Exception:
+    pass
 import urllib.request
 import urllib.error
 
