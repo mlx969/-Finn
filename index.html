@@ -251,6 +251,10 @@
   .learn-foot { font-size: 12px; color: var(--brand-deep); font-weight: 700; margin-top: 8px; min-height: 18px; }
 
   footer { text-align: center; color: var(--muted); font-size: 12px; padding: 30px 10px 50px; }
+
+  /* Dify 实时问答嵌入 */
+  .dify-embed { margin-top: 12px; }
+  .dify-embed iframe { width: 100%; min-height: 600px; border: 0; border-radius: 14px; background: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.08); }
 </style>
 </head>
 <body>
@@ -278,7 +282,7 @@
 <!-- ===== 主体 ===== -->
 <main>
   <!-- 全局演示声明 -->
-  <div class="note warn"><i class="ti ti-info-circle"></i><span><b>本地演示声明</b>：本页为教育辅助工具的<b>高保真原型</b>，下方问答是<b>预设的本地演示样例（非实时 AI）</b>，断网也能查看，<b>不会上传任何输入</b>。它不替代医疗、心理、法律服务。如需实时 AI，需接入已部署且经评审的 Dify 应用（参赛版暂未开放公网嵌入）。</span></div>
+  <div class="note warn"><i class="ti ti-info-circle"></i><span><b>使用说明</b>：本工具为分龄性健康教育辅助系统，下方为 <b>Dify 驱动的实时 AI 问答</b>（未配置时显示本地演示样例）。对话由已部署的 Dify 应用处理，数据保存策略以 Dify 平台为准。它<b>不替代医疗、心理、法律服务</b>；如遇危机请拨打 110 / 12355 / 12338。</span></div>
 
   <!-- 系统定位（分龄性健康教育系统：一条主线讲清“谁/学什么/AI做什么/怎么验证”） -->
   <div class="positioning">
@@ -346,9 +350,10 @@
    注意：Dify Cloud 处理对话时，数据保存策略以 Dify 平台为准。
    ============================================================ */
   const CONFIG = {
-    USE_LIVE_DIFY: false,
-    adultEmbed: "",   // 例：https://udify.app/embed/xxxxxxxx
-    minorEmbed: "",
+    // 改为 true 且下方填入对应 Embed 链接后，页面会用 Dify 实时问答 iframe 替换本地演示
+    USE_LIVE_DIFY: true,
+    adultEmbed: "https://udify.app/chatbot/401h5b4EfPzuY3Tm",   // 成年版 Dify 实时问答（已嵌入）
+    minorEmbed: "https://udify.app/chatbot/tQPP1tApftYeKk7p",   // 青年版 Dify 实时问答（已嵌入）
     adultWeb:   "",
     minorWeb:   ""
   };
@@ -629,11 +634,28 @@
     });
   }
 
+  // 用 Dify 官方 Embed iframe 替换本地演示（不暴露 API Key，由 Dify 服务端托管）
+  function mountDify(paneId, embedUrl) {
+    const pane = document.getElementById(paneId);
+    if (!pane) return;
+    const demo = pane.querySelector(".demo");
+    if (!demo) return;
+    demo.innerHTML =
+      '<div class="demo-head"><i class="ti ti-robot"></i> 实时 AI 问答（Dify 驱动）<span class="tag">实时 · 已接入</span></div>' +
+      '<div class="dify-embed"><iframe src="' + embedUrl + '" width="100%" height="600" frameborder="0" ' +
+      'allow="microphone; clipboard-write" referrerpolicy="no-referrer-when-downgrade" title="安心答 AI 问答"></iframe></div>';
+  }
+
   function boot() {
     renderCards();
     buildDemo("q-adult", "log-adult", DEMO_ADULT);
     buildDemo("q-minor", "log-minor", DEMO_MINOR);
     updateProgressPanel();
+
+    // 真实 Dify 接入：配置了 Embed 链接则用 iframe 替换本地演示；未配置则保留演示作为兜底
+    if (CONFIG.USE_LIVE_DIFY && CONFIG.adultEmbed) mountDify("pane-adult", CONFIG.adultEmbed);
+    if (CONFIG.USE_LIVE_DIFY && CONFIG.minorEmbed) mountDify("pane-minor", CONFIG.minorEmbed);
+
 
     // 记住上次选择
     let saved = null;
