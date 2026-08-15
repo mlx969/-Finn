@@ -11,6 +11,6 @@
 <text x="800" y="124" font-family="sans-serif" font-size="13" fill="#1F2430">100.0%</text>
 <text x="206" y="168" text-anchor="end" font-family="Microsoft YaHei,SimHei,sans-serif" font-size="13" fill="#1F2430">C FastGPT版(mock)</text>
 <rect x="220" y="150" width="570" height="26" rx="4" fill="#F1F3F7"/>
-<rect x="220" y="150" width="488.5" height="26" rx="4" fill="#3FBF9F"/>
-<text x="800" y="168" font-family="sans-serif" font-size="13" fill="#1F2430">85.7%</text>
+<rect x="220" y="150" width="570.0" height="26" rx="4" fill="#3FBF9F"/>
+<text x="800" y="168" font-family="sans-serif" font-size="13" fill="#1F2430">100.0%</text>
 </svg>

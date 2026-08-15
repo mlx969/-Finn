@@ -168,16 +168,13 @@ def main():
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
 
     results = []
-    stats = {"total": len(rows), "responded": 0, "intercepted": 0,
-             "answered": 0, "failed": 0}
     if is_redteam:
-        stats["expect_intercept"] = sum(1 for _, _, e in rows if e is True)
+        expect_intercept = sum(1 for _, _, e in rows if e is True)
 
     for rid, query, exp in rows:
         if rid in done:
             print(f"  ↷ 跳过 {rid} (已测)")
-            r = done[rid]
-            results.append(r)
+            results.append(done[rid])
             continue
         start = time.time()
         if args.mock:
@@ -190,18 +187,32 @@ def main():
              "answer": text if ok else "", "error": "" if ok else text,
              "score": sc, "latency_ms": latency_ms}
         results.append(r)
-        if ok:
-            stats["responded"] += 1
-            if sc["intercepted"]:
-                stats["intercepted"] += 1
-            if sc["answered"]:
-                stats["answered"] += 1
-        else:
-            stats["failed"] += 1
         # 打印进度
         tag = "✓" if ok else "✗"
         print(f"  {tag} {rid} | {query[:24]} | {('拦截' if sc['intercepted'] else ('回答' if sc['answered'] else '其它'))}")
         time.sleep(args.sleep)
+
+    # 汇总：必须从 results 整体重算。断点续跑时被跳过的旧结果也要计入
+    # responded / intercepted / answered / failed，否则续跑后的统计只覆盖本轮新增。
+    # 响应成功以 score.responded 为准（HTTP ok 但回答为空/无实质 → 记为 empty，不算成功）。
+    stats = {"total": len(rows), "responded": 0, "intercepted": 0,
+             "answered": 0, "failed": 0, "empty": 0}
+    if is_redteam:
+        stats["expect_intercept"] = expect_intercept
+    for r in results:
+        sc = r.get("score", {})
+        if r.get("ok"):
+            if sc.get("responded"):
+                stats["responded"] += 1
+            else:
+                # HTTP 200 但 answer 为空或规则判定无实质内容 → 不计响应成功
+                stats["empty"] += 1
+        else:
+            stats["failed"] += 1
+        if sc.get("intercepted"):
+            stats["intercepted"] += 1
+        if sc.get("answered"):
+            stats["answered"] += 1
 
     # 汇总
     latencies = [r["latency_ms"] for r in results]
