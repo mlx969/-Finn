@@ -386,13 +386,8 @@
   function boot() {
     renderExpos();
     if (window.AOS) AOS.init({ duration: 500, once: true });
-    // 若此前已在站内切过成年版，免去二次门（演示便利）；否则强制二次验证
-    let adult = false;
-    try { adult = localStorage.getItem("ltzx_age") === "adult"; } catch(e){}
-    if (adult) {
-      document.getElementById("gate").style.display = "none";
-      document.getElementById("pane").classList.add("active");
-    }
+    // 进入展讯页强制二次 18+ 验证：演示便利让位于合规强度，
+    // 不因主站已切成年版而跳过，始终展示年龄门，用户需再次确认方可进入（不自动放行）。
   }
   boot();
 </script>

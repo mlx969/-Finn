@@ -36,7 +36,7 @@ GOAI 大赛**赛道二（无界应用 / Boundless Agents）**参赛项目：**18
 ├─ SYSTEM_PROMPT.md                # 成年版 Agent 提示词（7 条安全规则）
 ├─ SYSTEM_PROMPT_MINOR.md          # 青少版提示词（规则更严）
 ├─ KB_CRISIS_HOTLINES.md           # 危机转介白名单（110/120/12356/12338/12355 + 依据）
-├─ DUAL_VERSION_DESIGN.md          # 双版本架构设计（年龄门控 + 物理隔离）
+├─ DUAL_VERSION_DESIGN.md          # 双版本架构设计（年龄门控 + 规划中物理隔离）
 ├─ ADULT_EXPO_COMPLIANCE.md        # 成人展合规说明
 ├─ ADULT_EXPO_SOURCES.md           # 成人展来源清单
 ├─ # —— 架构与配置 ——
@@ -57,7 +57,7 @@ GOAI 大赛**赛道二（无界应用 / Boundless Agents）**参赛项目：**18
 ├─ KB_ADULT_UPLOAD_LIST.md / KB_ADULT_REPAIR_GUIDE.md  # 成人库上传/修复指南
 ├─ KB_MINOR_UPLOAD_LIST.md         # 青少库上传清单
 ├─ # —— 双版本创意层 ——
-├─ E3_COURSE_CARDS.md / e3_cards.json   # 青少版 10 张身体权启蒙卡
+├─ E3_COURSE_CARDS.md / e3_cards.json   # 青少版 11 张身体权启蒙卡
 ├─ E4_DEMO_PAGE_OPTIONS.md         # 演示页方案
 ├─ # —— 品牌 / 商业 ——
 ├─ BRAND.md / BUSINESS_VALUE.md / DATA_STRATEGY.md / FORUM_REVIEW.md
@@ -69,7 +69,7 @@ GOAI 大赛**赛道二（无界应用 / Boundless Agents）**参赛项目：**18
 
 ## 3. 架构速览
 - **Dify Chatflow（5 节点）**：开始 → 知识检索(kb_adult/kb_minor) → 条件分支(检索不为空→LLM / 空→兜底) → LLM(Step 3.7 Flash + SYSTEM_PROMPT) → 直接回复。
-- **双版本分流**：按年龄/身份认证路由未成年版与成年版，后端物理隔离；青少版对成人向话题零容忍拦截。
+- **双版本分流**：按年龄/身份认证路由未成年版与成年版，规划中后端物理隔离（当前以年龄门+内容分级兜底）；青少版对成人向话题零容忍拦截。
 - **安全设计**：成年版 7 条规则（允许安全性行为教育、禁止动作细节/色情）、青少版更严、危机转介白名单（不替代专业干预）。
 - **评测**：152 条评测集 + 47 条红队，评分器链路 `eval_runner.py → eval_scorer.py` 已就绪。
 

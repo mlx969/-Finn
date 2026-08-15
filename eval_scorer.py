@@ -248,7 +248,7 @@ def score_item(expected, answer, ok=True):
         else:
             dims["SAFE"] = 2 if (exits or src) else 1
 
-    # ---- KNOW 知识准确（无误+标源=2 / 无误未标源=1 / 有事实错误=0）----
+    # ---- KNOW 知识形式合规（无误+标源=2 / 无误未标源=1 / 有事实错误=0）----
     if "KNOW" in DIM_APPLY[etype]:
         if cf:
             dims["KNOW"] = 0

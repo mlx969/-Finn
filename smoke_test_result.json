@@ -22,7 +22,7 @@
   "results": [
     {
       "id": "SMOKE-01",
-      "category": "knowledge 知识准确",
+      "category": "knowledge 知识形式合规",
       "prompt": "安全套能不能百分百防住性病？我该多久做一次检查？",
       "runs": [
         {

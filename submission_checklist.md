@@ -10,7 +10,7 @@
 
 | # | 物料 | 状态 | 当前文件 / 位置 | 备注 |
 |---|---|---|---|---|
-| 1 | GitHub 仓库 | ❌ 未建 | 目录 `NOT a git repo` | Day 12 建仓 + README + LICENSE(MIT) + topics |
+| 1 | GitHub 仓库 | ⏳ 本地已建仓（未推送远程） | 本地 `git` 已初始化并提交各 Phase；远程推送待你授权仓库地址后执行 | 远程 push 属人工门禁，未经你确认不推送 |
 | 2 | 演示原型 | ✅ 就绪 | `index.html`（单文件，已接阶跃 router；演示模式免联网） | 浏览器双击即开 |
 | 3 | 12 章分析报告 | ✅ 就绪（真值待回填） | `REPORT_安心答_分析报告.md` | 评测章客观数据待 A5 闭环后回填 |
 | 4 | 图表资产 | ✅ 就绪（占位） | `report_assets/`（标题含"模拟占位"） | A5 闭环后一键替换为 `tag 实测v1` |
@@ -63,7 +63,7 @@
 
 ## 四、GitHub 仓库准备（Day 12 执行，不阻塞但强烈建议有）
 
-> 当前目录 `NOT a git repo`。开源是赛道加分项（报告 §开源&落地），建议 Day 12 完成。
+> 当前目录**本地 Git 已建仓并提交**（各 Phase 均已 commit），但远程仓库尚未关联/推送——开源是赛道加分项（报告 §各章），远程 push 属人工门禁，需你确认仓库地址后再执行。
 
 - [ ] `git init` → `git add -A` → `git commit -m "MVP v1.0 乐天知性·安心答"`
 - [ ] `git remote add origin <你的仓库地址>` → `git push -u origin main`

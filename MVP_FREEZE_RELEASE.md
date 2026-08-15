@@ -24,7 +24,7 @@
 ### 🧩 核心：原型 + Agent 系统
 | 文件 | 说明 | Day |
 |---|---|---|
-| `index.html` | 可运行演示原型：18+ 年龄门 + 双 Tab 聊天（演示模式/实时API）+ 社区论坛 + 展讯入口 | 0 |
+| `index.html` | 可运行演示原型：18+ 年龄门 + 双 Tab 聊天（演示模式=本地智能应答免联网 / 实时API=经 `CONFIG.USE_LIVE_DIFY` 或环境变量接入，页面无 UI 内 Key 输入框）+ 社区论坛 + 展讯入口 | 0 |
 | `adult_expo.html` | 成人展讯独立页：二次 18+ 验证 + 9 展会卡 + 详情只外链 + 页内合规区 | 6 |
 | `SYSTEM_PROMPT.md` | 成年版 Agent 系统提示词（含 7 条强制安全规则，可直接粘 Dify） | 0 |
 | `SYSTEM_PROMPT_MINOR.md` | 青少版提示词（成人话题零容忍拦截，不进 LLM） | E 系列 |
@@ -58,7 +58,7 @@
 | 文件 | 说明 |
 |---|---|
 | `FORUM_REVIEW.md` | 社区论坛 + 四层审核机制设计 |
-| `E3_COURSE_CARDS.md` / `e3_cards.json` | 10 张身体权启蒙信息卡（青少版） |
+| `E3_COURSE_CARDS.md` / `e3_cards.json` | 11 张身体权启蒙信息卡（青少版） |
 | `E3_COURSE_LIST_OPTIONS.md` / `E4_DEMO_PAGE_OPTIONS.md` | 课程方向 / demo 页方案三选一记录 |
 | `FRONTEND_POLISH_PROPOSAL.md` | 前端轻改造提案（暖珊瑚奶油色板） |
 
