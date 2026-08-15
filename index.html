@@ -186,6 +186,70 @@
 
   .ext-link { font-size: 13px; color: var(--muted); margin: 22px 2px 0; }
   .ext-link a { color: var(--brand); font-weight: 600; }
+
+  /* 系统定位条 */
+  .positioning {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 6px;
+    margin: 6px 2px 16px; font-size: 13px; color: var(--ink);
+  }
+  .positioning b { color: var(--brand-deep); }
+  .positioning .node {
+    background: #fff; border: 1px solid var(--brand-soft); color: var(--brand-deep);
+    padding: 5px 11px; border-radius: 999px; font-weight: 600;
+  }
+  .positioning .arrow { color: var(--muted); font-weight: 700; }
+
+  /* 学习进度面板 */
+  .progress {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+    margin: 10px 2px 18px;
+  }
+  .metric {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .metric .k { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .metric .v { font-size: 22px; font-weight: 800; color: var(--brand-deep); }
+  .metric .v small { font-size: 12px; font-weight: 600; color: var(--muted); }
+  .metric .tagv { font-size: 11px; color: #b07; background: #ffe3ee; padding: 1px 8px; border-radius: 999px; margin-left: 6px; }
+
+  /* 学习弹层（1 卡 → 情境 → 3 题 → 反馈） */
+  .learn-mask {
+    position: fixed; inset: 0; background: rgba(28,22,32,.5);
+    display: none; align-items: center; justify-content: center; z-index: 120; padding: 18px;
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  }
+  .learn-mask.open { display: flex; }
+  .learn-box {
+    background: #fff; border-radius: 20px; max-width: 560px; width: 100%;
+    max-height: 88vh; overflow-y: auto; padding: 24px 24px 20px; box-shadow: var(--shadow-lg);
+    animation: gatePop .35s cubic-bezier(.2,.8,.3,1.1);
+  }
+  .learn-box h3 { margin: 0 0 4px; font-size: 19px; color: var(--brand-deep); }
+  .learn-close {
+    float: right; border: none; background: var(--brand-soft); color: var(--brand-deep);
+    width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 16px; line-height: 1;
+  }
+  .learn-box .teach { font-size: 13px; color: var(--muted); margin: 6px 0 12px; }
+  .learn-box .teach li { margin: 3px 0; }
+  .learn-box .scenario {
+    background: var(--brand-tint); border-left: 3px solid var(--brand); border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; margin: 0 0 14px;
+  }
+  .quiz { margin: 12px 0; }
+  .quiz .q { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .quiz .opt {
+    display: block; width: 100%; text-align: left; cursor: pointer; border: 1px solid var(--line);
+    background: #fff; color: var(--ink); padding: 9px 13px; border-radius: 10px; margin: 6px 0; font-size: 13px;
+    transition: .15s;
+  }
+  .quiz .opt:hover { border-color: var(--brand-soft); background: var(--brand-tint); }
+  .quiz .opt.correct { background: #e7f8ee; border-color: #36c47a; color: #1d7a47; }
+  .quiz .opt.wrong { background: #fdeaea; border-color: #e26; color: #a01; }
+  .quiz .opt:disabled { cursor: default; }
+  .quiz .why { font-size: 12px; color: var(--muted); margin: 4px 0 10px; padding-left: 4px; }
+  .learn-foot { font-size: 12px; color: var(--brand-deep); font-weight: 700; margin-top: 8px; min-height: 18px; }
+
   footer { text-align: center; color: var(--muted); font-size: 12px; padding: 30px 10px 50px; }
 </style>
 </head>
@@ -216,6 +280,17 @@
   <!-- 全局演示声明 -->
   <div class="note warn"><i class="ti ti-info-circle"></i><span><b>本地演示声明</b>：本页为教育辅助工具的<b>高保真原型</b>，下方问答是<b>预设的本地演示样例（非实时 AI）</b>，断网也能查看，<b>不会上传任何输入</b>。它不替代医疗、心理、法律服务。如需实时 AI，需接入已部署且经评审的 Dify 应用（参赛版暂未开放公网嵌入）。</span></div>
 
+  <!-- 系统定位（分龄性健康教育系统：一条主线讲清“谁/学什么/AI做什么/怎么验证”） -->
+  <div class="positioning">
+    <b>分龄性健康教育系统</b>
+    <span class="node">年龄分流</span><span class="arrow">→</span>
+    <span class="node">适龄课程</span><span class="arrow">→</span>
+    <span class="node">权威 RAG 问答</span><span class="arrow">→</span>
+    <span class="node">安全检测</span><span class="arrow">→</span>
+    <span class="node">危机转介</span><span class="arrow">→</span>
+    <span class="node">学习效果评测</span>
+  </div>
+
   <!-- 成年版 -->
   <section class="pane" id="pane-adult">
     <div class="note"><i class="ti ti-info-circle"></i><span>⚠️ 18+ 内容。本版含性健康与亲密关系科普，请理性阅读；如遇心理困扰可随时切换到青少版的健康边界内容。</span></div>
@@ -235,9 +310,12 @@
 
     <div class="path">
       <span class="step"><span class="num">1</span> 选「未满 18」进青少版</span>
-      <span class="step"><span class="num">2</span> 点开任意课程卡看要点</span>
-      <span class="step"><span class="num">3</span> 点「互动练习」里的示例问题看一次示范回答</span>
+      <span class="step"><span class="num">2</span> 点开任意课程卡 → 看要点 + 做 3 题小测验</span>
+      <span class="step"><span class="num">3</span> 看「学习进度」了解自己学会了什么</span>
     </div>
+
+    <!-- 学习进度 / 可度量教育指标（本地演示数据，非规模化实测） -->
+    <div class="progress" id="progress"></div>
 
     <div class="demo">
       <div class="demo-head"><i class="ti ti-seedling"></i> 青少版 · 互动练习（本地演示样例）<span class="tag">预设回答 · 非实时 AI</span></div>
@@ -251,6 +329,11 @@
 </main>
 
 <footer>乐天知性 · 安心答 — Global Open-source AI Challenge (GOAI) 参赛作品 · 分龄性健康教育系统</footer>
+
+<!-- 学习弹层：1 张课程卡 → 1 个情境 → 3 道 Quiz → 结果反馈 -->
+<div class="learn-mask" id="learnMask">
+  <div class="learn-box" id="learnBox"></div>
+</div>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
@@ -283,6 +366,110 @@
     {icon:"ti-device-mobile",title:"色情报复与裸照",sum:"不拍、不传、不被勒索。一旦被威胁，留证+报警，法律站在你这边。",pts:["“发一张就删”是陷阱，发出去就失去控制","被勒索立刻截图保存证据，别删聊天记录","可报 110（敲诈勒索）并联系平台下架"]},
     {icon:"ti-lifebuoy",title:"被性侵后怎么办",sum:"不是你的错。保留证据、在安全后尽快报警就医、找信任的人陪你去求助。",pts:["不要立刻洗澡/洗衣物，保留生物证据","在确保安全后尽快报警、就医并咨询取证安排；不因超过某个时限就放弃求助","求助渠道：正在危险中先打 110；之后可找 12355 青少年服务台 / 12338 妇联维权 / 学校心理中心 / 信任的成人"]},
     {icon:"ti-spider",title:"网上那些“假装喜欢你”的人",sum:"网上有人用“哥哥/姐姐”“刷礼物”“私下见面”接近你，本质是让你做不舒服甚至违法的事。识别信号 + 法律红线 + 求助这里都有。",pts:["危险信号：要你发私密照片/视频、要礼物或让你刷礼物、约线下单独见面、说“这是我们秘密”、让你别告诉家长","法律红线：未成年人被诱导做与身体或性相关的交易或行为，对方是违法的；你不是自愿、不是你的错，责任在对方","求助：正在危险中立刻打 110；之后可找 12355 青少年服务台（共青团）/ 12338 妇联 / 信任的成人 / 学校心理老师"]}
+  ];
+
+  // 互动学习测验：每张卡 1 个情境 + 3 道选择题（与课程卡一一对应，共 11 组）
+  // 口径与课程卡、KB_CRISIS_HOTLINES.md 已核实白名单一致；无医疗硬断言。
+  const QUIZ = [
+    { scenario:"表哥总在你不愿意时搂抱你，说“一家人客气什么”。",
+      q:[
+        {t:"身体权意味着？", o:["家人可以随便接触我","我的身体我做主，不舒服有权拒绝","长辈的接触都合理"], a:1,
+         w:"身体权是基本人权，从童年到老都归你自己；不舒服的接触有权拒绝。"},
+        {t:"以下哪种属于危险信号？", o:["公开场合的普通拥抱","让你保守秘密的触碰","和同学握手"], a:1,
+         w:"让你保守秘密的触碰、单独约你去、给钱换接触——都是危险信号。"},
+        {t:"遇到不舒服的触碰，正确做法是？", o:["忍忍就好","明确说“不”并离开，告诉信任的成人","不告诉任何人"], a:1,
+         w:"你没做错；直接说“不”、离开现场，并告诉信任的成人或打 12355。"}
+      ]},
+    { scenario:"邻居叔叔单独约你去他家“看小猫”，还说别告诉爸妈。",
+      q:[
+        {t:"单独约你去、还说别告诉家长，这是？", o:["正常","危险信号","普通玩笑"], a:1,
+         w:"要你保密、单独见面都是危险信号，应拒绝并告知信任的成人。"},
+        {t:"正确反应？", o:["去，反正就看看猫","拒绝并告诉信任的成人","自己偷偷去"], a:1,
+         w:"拒绝并立刻告诉信任的大人；必要时打 110。"},
+        {t:"可求助的渠道是？", o:["12355 青少年服务台","随便网友","不求助"], a:0,
+         w:"12355 青少年服务台（共青团）、12338 妇联维权热线、信任的成人都可求助。"}
+      ]},
+    { scenario:"对象说“都谈恋爱了你怎么还扭扭捏捏”，想发生关系。",
+      q:[
+        {t:"沉默等于同意吗？", o:["是","不是，沉默≠同意","看情况"], a:1,
+         w:"真正的同意是清醒、自愿、可撤回；沉默不是同意。"},
+        {t:"说“好”之后可以改主意吗？", o:["不能","可以随时说“停”","必须继续"], a:1,
+         w:"同意可随时撤回，说“停”就应当停止。"},
+        {t:"用分手威胁逼你就范，算自愿吗？", o:["算","不算，是胁迫","看谁有理"], a:1,
+         w:"利用情感、权力施压都不算自愿；这是违背同意的。"}
+      ]},
+    { scenario:"男友说“安全期没事，不用戴套”。",
+      q:[
+        {t:"唯一兼顾避孕 + 防病的是？", o:["安全期","安全套","体外射精"], a:1,
+         w:"安全套是唯一兼顾避孕与防病的；安全期、体外射精失败率较高。"},
+        {t:"安全期 / 体外射精是？", o:["可靠避孕","伪避孕，失败率较高","100% 有效"], a:1,
+         w:"它们是“伪避孕”，失败率约 15%–25%，不应依赖。"},
+        {t:"紧急避孕药？", o:["常规避孕方式","补救不是常规，具体用法请遵医嘱","想吃就吃"], a:1,
+         w:"紧急避孕药是补救不是常规方式；用法按药品说明或咨询医生/药师。"}
+      ]},
+    { scenario:"妈妈说“你这么小不用打 HPV 疫苗”。",
+      q:[
+        {t:"HPV 主要靠什么传播？", o:["仅性行为","皮肤接触也可","空气"], a:1,
+         w:"HPV 可经皮肤接触传播，男女都可能感染。"},
+        {t:"疫苗能替代筛查吗？", o:["能","不能，有性行为仍需定期检查","不知道"], a:1,
+         w:"疫苗不能替代筛查，有性行为后仍需定期宫颈检查。"},
+        {t:"关于接种年龄，正确的是？", o:["全国统一 9 岁","适用年龄与产品批准范围因地区和疫苗种类而异","只有女生能打"], a:1,
+         w:"适用年龄与批准范围因地区和疫苗种类而异，以当地接种门诊为准。"}
+      ]},
+    { scenario:"你比同学晚发育，很焦虑。",
+      q:[
+        {t:"第二性征早晚？", o:["有标准时间表","因人而异，没有标准时间表","越晚越好"], a:1,
+         w:"每个人早晚不同，没有“标准时间表”。"},
+        {t:"月经 / 遗精是？", o:["羞耻的事","正常的“出厂设置”","生病"], a:1,
+         w:"都是正常发育现象，不是羞耻或疾病。"},
+        {t:"卫生巾建议多久换一次？", o:["一天一次","2–4 小时换一次","不用换"], a:1,
+         w:"卫生巾建议 2–4 小时更换一次，保持卫生。"}
+      ]},
+    { scenario:"想跟爸妈聊但怕尴尬。",
+      q:[
+        {t:"好的破冰方式？", o:["正面硬聊","借新闻 / 影视角色引出","直接吵架"], a:1,
+         w:"借第三方话题破冰，比正面硬聊压力小。"},
+        {t:"被拒绝后？", o:["放弃","换书面信或找学校心理老师","绝交"], a:1,
+         w:"被拒接也正常，书面信或学校心理老师也是途径。"},
+        {t:"较好沟通姿态？", o:["先问观点再表达自己","只说教","不理对方","逼对方认错"], a:0,
+         w:"先问对方观点再表达自己，避免变成说教。"}
+      ]},
+    { scenario:"男友总贬低你“你什么都做不好”，还查你手机。",
+      q:[
+        {t:"贬低 + 查手机属于？", o:["爱","关系暴力的红灯","正常关心"], a:1,
+         w:"贬低、孤立、控制都是关系暴力的红灯。"},
+        {t:"占几条红灯就该警惕？", o:["0 条","至少 1 条","必须全占"], a:1,
+         w:"占一条就该警惕，不是“他太爱我”。"},
+        {t:"“他太爱我才这样”对吗？", o:["对","不对，控制≠爱","看心情"], a:1,
+         w:"控制、贬低不是爱，是暴力信号。"}
+      ]},
+    { scenario:"网友说“发一张就删”，你发了自拍他还想更私密。",
+      q:[
+        {t:"“发一张就删”是？", o:["真的","陷阱","玩笑"], a:1,
+         w:"发出去就失去控制，这是勒索陷阱。"},
+        {t:"被勒索怎么办？", o:["删聊天记录","截图留证 + 报警","给钱"], a:1,
+         w:"立刻截图保存证据，别删记录，可报 110（敲诈勒索）。"},
+        {t:"可报哪个号码处理敲诈勒索？", o:["110","不用管","找网友评理"], a:0,
+         w:"可报 110；平台举报也可同步进行。"}
+      ]},
+    { scenario:"不幸遭遇性侵，很害怕。",
+      q:[
+        {t:"第一时间应？", o:["洗澡洗衣物","保留证据，尽快报警就医","不告诉任何人"], a:1,
+         w:"不要立刻洗澡/洗衣物，保留生物证据，尽快报警就医。"},
+        {t:"是不是你的错？", o:["是","不是你的错","看情况"], a:1,
+         w:"不是你的错；责任在施害者。"},
+        {t:"可求助渠道？", o:["110 / 12355 / 12338 / 信任成人","谁都不说","只发网上"], a:0,
+         w:"正在危险中先打 110；之后可找 12355 / 12338 / 信任成人 / 学校心理中心。"}
+      ]},
+    { scenario:"“哥哥”给你刷礼物，要你私下见面、发私密照。",
+      q:[
+        {t:"危险信号包括？", o:["要私密照 / 礼物 / 线下单独见面 / 说秘密 / 别告诉家长","请吃饭","打电话"], a:0,
+         w:"这些都是网络诱骗的危险信号，应立刻停止联系并告知成人。"},
+        {t:"未成年人被诱导做相关行为，责任在？", o:["你自愿","对方违法，责任在对方","各半"], a:1,
+         w:"你不是自愿、不是你的错，责任在对方。"},
+        {t:"遇到危险先打？", o:["110 / 120","网友","不报警"], a:0,
+         w:"正在发生危险先打 110（报警）/ 120（急救）。"}
+      ]}
   ];
 
   // 本地演示样例（预设回答，非实时 AI；口径与 KB_CRISIS_HOTLINES.md 已核实白名单一致）
@@ -324,11 +511,104 @@
       el.className = "card";
       el.setAttribute("data-aos", "fade-up");
       el.setAttribute("data-aos-delay", String(i * 50));
-      el.innerHTML = `<div class="ico-wrap"><i class="ti ${c.icon}"></i></div><h3>${c.title}</h3><p class="sum">${c.sum}</p><ul class="pts">${c.pts.map(p=>`<li>${p}</li>`).join("")}</ul>`;
-      el.onclick = () => el.classList.toggle("open");
+      el.innerHTML = `<div class="ico-wrap"><i class="ti ${c.icon}"></i></div><h3>${c.title}</h3><p class="sum">${c.sum}</p><p style="font-size:12px;color:var(--brand);margin:8px 0 0;font-weight:600;">📝 点开看要点 + 做 3 题小测验</p>`;
+      el.onclick = () => openLearn(i);
       box.appendChild(el);
     });
   }
+
+  // 学习进度（本地 localStorage，仅本机；标注为非规模化实测）
+  const LS_LEARN = "ltzx_learn";
+  function loadLearn() {
+    try { return JSON.parse(localStorage.getItem(LS_LEARN) || "{}"); }
+    catch (e) { return {}; }
+  }
+  function saveLearn(obj) {
+    try { localStorage.setItem(LS_LEARN, JSON.stringify(obj)); } catch (e) {}
+  }
+  function recordOpen(i) {
+    const d = loadLearn(); d[i] = d[i] || {}; d[i].opened = true; saveLearn(d);
+  }
+  function recordResult(i, correct) {
+    const d = loadLearn(); d[i] = d[i] || {};
+    if ((d[i].answered || 0) >= 3) return;  // 每张卡最多计 3 题，避免重复打开导致指标虚高
+    d[i].answered = (d[i].answered || 0) + 1;
+    d[i].correct = (d[i].correct || 0) + (correct ? 1 : 0);
+    d[i].done = (d[i].answered >= 3);
+    saveLearn(d);
+  }
+  function updateProgressPanel() {
+    const box = document.getElementById("progress");
+    if (!box) return;
+    const d = loadLearn();
+    let opened = 0, correct = 0, answered = 0;
+    for (let i = 0; i < CARDS.length; i++) {
+      if (d[i] && d[i].opened) opened++;
+      if (d[i]) { answered += (d[i].answered || 0); correct += (d[i].correct || 0); }
+    }
+    const rate = answered ? Math.round(100 * correct / answered) : 0;
+    box.innerHTML = `
+      <div class="metric"><div class="k">已完成课程（本地）</div><div class="v">${opened}<small> / ${CARDS.length}</small></div></div>
+      <div class="metric"><div class="k">测验平均正确率（本地）</div><div class="v">${rate}<small>%</small></div></div>
+      <div class="metric"><div class="k">风险识别前后测<span class="tagv">待验证</span></div><div class="v">—</div></div>
+      <div class="metric"><div class="k">说明</div><div class="v" style="font-size:12px;color:var(--muted);font-weight:600;">本地演示数据 · 非规模化实测</div></div>`;
+  }
+
+  // 学习弹层：1 卡 → 情境 → 3 题 → 反馈
+  function openLearn(i) {
+    const c = CARDS[i], qz = QUIZ[i];
+    recordOpen(i); updateProgressPanel();
+    const mask = document.getElementById("learnMask");
+    const box = document.getElementById("learnBox");
+    const solved = [];  // 每题是否已答、是否正确
+    function render() {
+      box.innerHTML = `
+        <button class="learn-close" onclick="closeLearn()">×</button>
+        <h3>${c.title}</h3>
+        <p class="teach">要点：<ul class="teach">${c.pts.map(p=>`<li>${p}</li>`).join("")}</ul></p>
+        <div class="scenario">📌 情境：${qz.scenario}</div>
+        <div id="quizWrap"></div>
+        <div class="learn-foot" id="learnFoot"></div>`;
+      const wrap = box.querySelector("#quizWrap");
+      qz.q.forEach((item, qi) => {
+        const block = document.createElement("div");
+        block.className = "quiz";
+        block.innerHTML = `<div class="q">${qi + 1}. ${item.t}</div>`;
+        item.o.forEach((opt, oi) => {
+          const b = document.createElement("button");
+          b.className = "opt"; b.textContent = opt;
+          b.onclick = () => choose(block, item, oi, qi);
+          block.appendChild(b);
+        });
+        wrap.appendChild(block);
+      });
+    }
+    function choose(block, item, oi, qi) {
+      if (solved[qi] !== undefined) return;
+      const opts = block.querySelectorAll(".opt");
+      opts.forEach((b, k) => {
+        b.disabled = true;
+        if (k === item.a) b.classList.add("correct");
+        if (k === oi && oi !== item.a) b.classList.add("wrong");
+      });
+      const ok = (oi === item.a);
+      solved[qi] = ok; recordResult(i, ok);
+      const why = document.createElement("div");
+      why.className = "why";
+      why.textContent = (ok ? "✅ 答对了。" : "❌ 答错了。") + item.w;
+      block.appendChild(why);
+      const foot = box.querySelector("#learnFoot");
+      const doneCount = solved.filter(x => x !== undefined).length;
+      if (doneCount === qz.q.length) {
+        const right = solved.filter(Boolean).length;
+        foot.textContent = `本轮完成：${right} / ${qz.q.length} 题答对。可关闭或重做其它卡片。`;
+        updateProgressPanel();
+      }
+    }
+    render();
+    mask.classList.add("open");
+  }
+  function closeLearn() { document.getElementById("learnMask").classList.remove("open"); }
 
   function buildDemo(listId, logId, data) {
     const qBox = document.getElementById(listId);
@@ -353,6 +633,7 @@
     renderCards();
     buildDemo("q-adult", "log-adult", DEMO_ADULT);
     buildDemo("q-minor", "log-minor", DEMO_MINOR);
+    updateProgressPanel();
 
     // 记住上次选择
     let saved = null;
@@ -360,6 +641,11 @@
     if (saved === "adult" || saved === "minor") {
       enter(saved === "adult");
     }
+
+    // 点击遮罩空白处关闭学习弹层
+    document.getElementById("learnMask").addEventListener("click", (e) => {
+      if (e.target === document.getElementById("learnMask")) closeLearn();
+    });
 
     if (window.AOS) AOS.init({ duration: 600, once: true, offset: 60, easing: "ease-out-cubic" });
   }
